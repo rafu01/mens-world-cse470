@@ -1,0 +1,14 @@
+/* .button {
+    background-color: #293462 !important;
+} */
+/* .container{
+    position: center;
+} */
+.center {
+    text-align: center;
+    font-weight: bold;
+}
+.img {
+    width: 100%;
+    height: 100%;
+}

@@ -1,10 +1,38 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-	<h1> Hello </h1>
-</body>
+<html lang="en" xmlns="http://www.thymeleaf.org"></html>
+	<head th:replace="base::header">
+		<nav th:replace="base::navbar">
+		</nav>
+	</head>
+	<body>
+		<div class="columns">
+			<div class="column is-one-third">
+			  <div class="card">
+				<div class="card-image">
+					<figure class="img">
+					  <img  th:src="@{img/home cover.jpg}" alt="Placeholder image">
+					</figure>
+				  </div>
+			  </div>
+			</div>
+			<div class="column is-one-third">
+				<div class="card">
+				  <div class="card-image">
+					  <figure class="img">
+						<img  th:src="@{img/wallet home.jpg}" alt="Placeholder image">
+					  </figure>
+					</div>
+				</div>
+			  </div>
+			  <div class="column is-one-third">
+				<div class="card">
+				  <div class="card-image">
+					  <figure class="img">
+						<img  th:src="@{img/watch home.jpg}" alt="Placeholder image">
+					  </figure>
+					</div>
+				</div>
+			  </div>
+		  </div>
+	</body>
 </html>
