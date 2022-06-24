@@ -56,13 +56,13 @@ public class MainController {
 			customer.setRole("ROLE_USER");
 			this.customerRepository.save(customer);
 			model.addAttribute("customer",customer);
-			session.setAttribute("message",new Message("Successfully registered! ","alert-success"));
+			session.setAttribute("message",new Message("Successfully registered! ","notification is-success"));
 			return "login";
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 			model.addAttribute("customer",customer);
-			session.setAttribute("message",new Message(e.getMessage(),"alert-danger"));
+			session.setAttribute("message",new Message(e.getMessage(),"notification is-danger"));
 			return "signup";
 		}
 	}
