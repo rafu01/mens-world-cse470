@@ -15,7 +15,8 @@ public class Customer {
 	private int id;
 	@Column(unique=true)
 	private String email;
-	private String name;	
+	private String name;
+	private String role;	
 //	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
 	private String password;
 	public String getName() {
@@ -42,5 +43,10 @@ public class Customer {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
 }

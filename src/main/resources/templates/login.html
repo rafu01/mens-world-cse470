@@ -7,7 +7,11 @@
     <div class="column is-half is-offset-one-quarter center">
         <p>Existing User Login</p>
     </div>
-    <div class="card column is-half is-offset-one-quarter">      
+    <div class="card column is-half is-offset-one-quarter">  
+      <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+        <p class="text-center" th:text="${session.message.content}"> <p>
+        <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+      </div>    
       <div class="field">
         <label class="label">Email</label>
         <div class="control has-icons-left has-icons-right">

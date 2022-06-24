@@ -7,11 +7,16 @@
     <div class="column is-half is-offset-one-quarter center">
         <p>New Signup</p>
     </div>
-    <div class="card column is-half is-offset-one-quarter">      
+    <div class="card column is-half is-offset-one-quarter">     
+      <form th:action="@{/signup}" method="post">
+        <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+          <p class="text-center" th:text="${session.message.content}"> <p>
+          <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+        </div>
         <div class="field">
             <label class="label">Full Name</label>
             <div class="control has-icons-left has-icons-right">
-              <input class="input is-success" type="text" placeholder="Full Name">
+              <input class="input is-success" name="fullname" type="text" placeholder="Full Name">
               <span class="icon is-small is-left">
                 <i class="fas fa-user"></i>
               </span>
@@ -25,7 +30,7 @@
           <div class="field">
             <label class="label">Email</label>
             <div class="control has-icons-left has-icons-right">
-              <input class="input is-success" type="email" placeholder="Email input">
+              <input class="input is-success" name="email" type="email" placeholder="Email input">
               <span class="icon is-small is-left">
                 <i class="fas fa-envelope"></i>
               </span>
@@ -38,7 +43,7 @@
           <div class="field">
             <label class="label">Password</label>
             <p class="control has-icons-left">
-              <input class="input is-success" type="password" placeholder="Password">
+              <input class="input is-success" name="password" type="password" placeholder="Password">
               <span class="icon is-small is-left">
                 <i class="fas fa-lock"></i>
               </span>
@@ -62,6 +67,7 @@
               <button class="button is-danger is-light">Cancel</button>
             </div>
           </div>
+        </form>
     </div>
 </body>
 </html>
