@@ -1,5 +1,7 @@
 package com.mensworld.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.mensworld.dao.CustomerRepository;
+import com.mensworld.dao.ProductsRepository;
 import com.mensworld.entities.Customer;
+import com.mensworld.entities.Product;
 import com.mensworld.utilities.Message;
 
 @Controller
@@ -20,6 +24,8 @@ public class MainController {
 	private BCryptPasswordEncoder passwordEncoder;
 	@Autowired
 	private CustomerRepository customerRepository;
+	@Autowired
+	private ProductsRepository productsRepository;
 	@GetMapping("/")
 	public String home(Model model) {
 		model.addAttribute("title", "men's world");
@@ -65,5 +71,22 @@ public class MainController {
 			session.setAttribute("message",new Message(e.getMessage(),"notification is-danger"));
 			return "signup";
 		}
+	}
+	@GetMapping("/products")
+	public String products(Model model){
+		// Product p = createProd();
+		// productsRepository.save(p);
+		List<Product> allProduct = productsRepository.findAll();
+		model.addAttribute("title", "signup");
+		model.addAttribute("products", allProduct);
+		// System.out.println(allProduct);
+		return "products";
+	}
+	public Product createProd(){
+		Product p = new Product();
+		p.setName("shoe#1");
+		p.setPrice("300");
+		p.setQuantity("10");
+		return p;
 	}
 }
