@@ -53,17 +53,29 @@
                   </div>
                 </div>
               </div>
-          
+              
               <div class="navbar-end">
                 <div class="navbar-item">
-                  <div class="buttons">
-                    <a class="button is-primary" th:href="@{/signup}">
-                      <strong>Sign up</strong>
-                    </a>
-                    <a class="button is-light" th:href="@{/login}">
-                      Log in
-                    </a>
-                  </div>
+                  <section th:if="${customer==null}">
+                    <div class="buttons">
+                      <a class="button is-primary" th:href="@{/signup}">
+                        <strong>Sign up</strong>
+                      </a>
+                      <a class="button is-light" th:href="@{/login}">
+                        Log in
+                      </a>
+                    </div>
+                  </section>
+                  <section th:if="${customer!=null}">
+                    <div class="buttons">
+                      <a class="button is-primary" th:href="@{/}">
+                        <strong th:text="${customer.name}"></strong>
+                      </a>
+                      <a class="button is-light" th:href="@{/user/dashboard}">
+                        dashboard
+                      </a>
+                    </div>
+                  </section>
                 </div>
               </div>
             </div>

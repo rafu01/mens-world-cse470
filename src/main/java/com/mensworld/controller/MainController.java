@@ -1,5 +1,6 @@
 package com.mensworld.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -28,12 +29,25 @@ public class MainController {
 	@Autowired
 	private ProductsRepository productsRepository;
 	@GetMapping("/")
-	public String home(Model model) {
+	public String home(Model model, Principal principal) {
 		model.addAttribute("title", "men's world");
+		Object customer = isLogged(principal);
+		model.addAttribute("customer", customer);
 		// Customer us = new Customer();
 		// System.out.print(us.getId());
 		// customerRepository.save(us);
 		return "home";
+	}
+	public Object isLogged(Principal principal){
+		try{
+			String email = principal.getName();
+			Customer customer = customerRepository.getUserByEmail(email);
+			return customer;
+		}
+		catch(Exception e){
+			System.out.println(e);
+			return null;
+		}
 	}
 	@GetMapping("/login")
 	public String login(Model model){
@@ -74,12 +88,14 @@ public class MainController {
 		}
 	}
 	@GetMapping("/products")
-	public String products(Model model){
+	public String products(Model model, Principal principal){
 		// Product p = createProd();
 		// productsRepository.save(p);
 		List<Product> allProduct = productsRepository.findAll();
 		// Product x = productsRepository.getReferenceById(36);
 		// x.setName(id);
+		Object customer = isLogged(principal);
+		model.addAttribute("customer", customer);
 		model.addAttribute("title", "signup");
 		model.addAttribute("products", allProduct);
 		// System.out.println(allProduct);
@@ -93,10 +109,16 @@ public class MainController {
 		return p;
 	}
 	@GetMapping(value = ("/product/{id}"))
-	public String singpleProduct(@PathVariable int id, Model model){
+	public String singpleProduct(@PathVariable int id, Model model, Principal principal){
 		Product product = productsRepository.getReferenceById(id);
 		System.out.println(product.getId());
+		Object customer = isLogged(principal);
+		model.addAttribute("customer", customer);
 		model.addAttribute("product",product);
 		return "singleproduct";
+	}
+	@GetMapping(value = ("/add-product"))
+	public String addProduct(){
+		return "addproduct";
 	}
 }
