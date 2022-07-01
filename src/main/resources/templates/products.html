@@ -6,6 +6,7 @@
     <div class="container">
     <div class="columns is-multiline is-centered">
             <div th:each="product: ${products}" class="column is-one-quarter ">
+              <a th:href="@{/product/{id}(id=${product.id})}">
                 <div class="card">
                     <div class="card-image">
                       <figure class="image is-4by3">
@@ -15,16 +16,16 @@
                     <div class="card-content">
                       <div class="media">
                         <div class="media-content">
-                          <p class="title is-4" th:text="${product.name}"></p>
+                          <p class="title is-4" th:text="${'product id: ' +product.id}"></p>
                         </div>
                       </div>                  
                       <div class="content">
-                        <p>Price: </p><p th:text="${product.price}"></p>
-                        <p>Quantity: </p> <p th:text="${product.quantity}"></p>
-                        <br>
+                        <p th:text="${'Price: ' + product.price}"></p>
+                        <p th:text="${'Quantity: ' + product.quantity}"></p>
                       </div>
                     </div>
-                  </div>        
+                  </div>   
+                  </a>     
             </div>
       </div>
     </div>

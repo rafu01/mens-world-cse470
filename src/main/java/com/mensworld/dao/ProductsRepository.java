@@ -9,5 +9,11 @@ import com.mensworld.entities.Product;
 public interface ProductsRepository extends JpaRepository<Product, Integer> {
     @Override
     List<Product> findAll();
+    @Override
+    Product getReferenceById(Integer id);
+    @Override
+    void deleteById(Integer id);
+    @Override
+    void deleteAllByIdInBatch(Iterable<Integer> ids);
 }
 
