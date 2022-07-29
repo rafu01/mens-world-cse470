@@ -1,9 +1,12 @@
 package com.mensworld.controller;
 
+import java.lang.ProcessBuilder.Redirect;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
+import javax.xml.bind.PrintConversionEvent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,11 +16,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.mensworld.dao.CustomerRepository;
 import com.mensworld.dao.ProductsRepository;
+import com.mensworld.dao.ShopOwnerRepository;
 import com.mensworld.entities.Customer;
 import com.mensworld.entities.Product;
+import com.mensworld.entities.ShopOwner;
+import com.mensworld.entities.User;
 import com.mensworld.utilities.Message;
 
 @Controller
@@ -28,11 +35,13 @@ public class MainController {
 	private CustomerRepository customerRepository;
 	@Autowired
 	private ProductsRepository productsRepository;
+	@Autowired
+	private ShopOwnerRepository shopownerRepository;
 	@GetMapping("/")
 	public String home(Model model, Principal principal) {
 		model.addAttribute("title", "men's world");
-		Object customer = isLogged(principal);
-		model.addAttribute("customer", customer);
+		Object user = isLogged(principal);
+		model.addAttribute("user", user);
 		// Customer us = new Customer();
 		// System.out.print(us.getId());
 		// customerRepository.save(us);
@@ -45,27 +54,52 @@ public class MainController {
 			return customer;
 		}
 		catch(Exception e){
-			System.out.println(e);
+			// System.out.println(e);
 			return null;
 		}
 	}
 	@GetMapping("/login")
-	public String login(Model model){
-		model.addAttribute("title", "login");
+	public String login(Model model, Principal principal){
+		model.addAttribute("title","login");
+		return "login";
+		// if(isLogged(principal)==null){
+		// 	model.addAttribute("title", "login");
+		// 	return new RedirectView("login");
+		// }
+		// else{
+		// 	String email = principal.getName();
+        // 	Customer customer = customerRepository.getUserByEmail(email);
+        // 	System.out.println(customer.getName());
+        // 	model.addAttribute("title", "dashboard");
+        // 	model.addAttribute("customer", customer);
+		// 	return new RedirectView("dashboard");
+		// }
+	}
+	@GetMapping("/login-error")
+	public String login_fail(Model model,HttpSession session){
+		model.addAttribute("title","login");
+		session.setAttribute("message",new Message("email/password incorrect","notification is-danger"));
 		return "login";
 	}
-	@GetMapping("/signup")
-	public String signup(Model model){
+	@GetMapping(value = ("/signup/{type}"))
+	public String signup(@PathVariable String type, Model model){
 		model.addAttribute("title", "signup");
+		model.addAttribute("type", type);
 		return "signup";
 	}
-	@RequestMapping(path="/signup", method=RequestMethod.POST)
-	private String ProcessSignup(@RequestParam("fullname") String fullname, @RequestParam("email") String email,
-			@RequestParam("password") String password,Model model,
+	@RequestMapping(value = ("/signup/{type}"), method=RequestMethod.POST)
+	private RedirectView ProcessSignup(@RequestParam("fullname") String fullname, @RequestParam("email") String email,
+			@RequestParam("password") String password,@PathVariable String type, Model model,
 			HttpSession session) {
-		Customer customer = new Customer();
-		customer.setName(fullname);
-		customer.setEmail(email);
+		User user;
+		if(type.equals("ROLE_SHOP")){
+			user = new ShopOwner();
+		}
+		else{
+			user = new Customer();
+		}
+		user.setName(fullname);
+		user.setEmail(email);
 		try {
 			if(customerRepository.getUserByEmail(email)!=null) {
 				throw new Exception("user email already exists");
@@ -73,19 +107,29 @@ public class MainController {
 			if(password.length()<6) {
 				throw new Exception("password length must be at least 6");
 			}
-			customer.setPassword(passwordEncoder.encode(password));
-			customer.setRole("ROLE_USER");
-			this.customerRepository.save(customer);
-			model.addAttribute("customer",customer);
+			user.setPassword(passwordEncoder.encode(password));
+			user.setRole(type);
+			if(type.equals("ROLE_SHOP")){
+				this.shopownerRepository.save((ShopOwner)user);
+			}
+			else {
+				this.customerRepository.save((Customer)user);
+			} 
+			model.addAttribute("user",user);
 			session.setAttribute("message",new Message("Successfully registered! ","notification is-success"));
-			return "login";
+			return new RedirectView("/login");
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			model.addAttribute("customer",customer);
+			model.addAttribute("user",user);
 			session.setAttribute("message",new Message(e.getMessage(),"notification is-danger"));
-			return "signup";
+			return new RedirectView("/signup/"+type);
 		}
+	}
+	@GetMapping("/selectsignup")
+	public String selectSignup(Model model){
+		model.addAttribute("title", "Select Option");
+		return "selectsignup";
 	}
 	@GetMapping("/products")
 	public String products(Model model, Principal principal){
@@ -111,7 +155,6 @@ public class MainController {
 	@GetMapping(value = ("/product/{id}"))
 	public String singpleProduct(@PathVariable int id, Model model, Principal principal){
 		Product product = productsRepository.getReferenceById(id);
-		System.out.println(product.getId());
 		Object customer = isLogged(principal);
 		model.addAttribute("customer", customer);
 		model.addAttribute("product",product);

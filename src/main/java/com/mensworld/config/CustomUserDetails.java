@@ -6,34 +6,35 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.mensworld.entities.Customer;
+
+import com.mensworld.entities.User;
 
 import java.util.List;
 
 public class CustomUserDetails implements UserDetails{
-	private Customer customer;
+	private User user;
 	
-	public CustomUserDetails(Customer customer) {
+	public CustomUserDetails(User user) {
 		super();
-		this.customer = customer;
+		this.user = user;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(customer.getRole());
+		SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(user.getRole());
 		return List.of(simpleGrantedAuthority);
 	}
 
 	@Override
 	public String getPassword() {
 
-		return customer.getPassword();
+		return user.getPassword();
 	}
 
 	@Override
 	public String getUsername() {
 
-		return customer.getEmail();
+		return user.getEmail();
 	}
 
 	@Override

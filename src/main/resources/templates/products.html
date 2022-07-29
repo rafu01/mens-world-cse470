@@ -4,6 +4,16 @@
 </head>
 <body>
     <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-half">
+          <input class="input" type="text" placeholder="calvin klein">
+        </div>
+        <div class="column is-narrow">
+          <button class="button is-primary">Search</button>
+        </div>
+      </div>
+    </div>
+    <div class="container">
     <div class="columns is-multiline is-centered">
             <div th:each="product: ${products}" class="column is-one-quarter ">
               <a th:href="@{/product/{id}(id=${product.id})}">

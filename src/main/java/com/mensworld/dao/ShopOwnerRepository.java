@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.mensworld.entities.ShopOwner;
+
+
 public interface ShopOwnerRepository extends JpaRepository<ShopOwner,Integer>{
 	@Query("select c from ShopOwner c where c.email = :email")
 	public ShopOwner getUserByEmail(@Param("email") String email);

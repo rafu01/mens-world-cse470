@@ -19,10 +19,11 @@ public class ShopOwnerController {
     @GetMapping("/dashboard")
     public String dashboard(Model model, Principal principal){
         String email = principal.getName();
-        ShopOwner customer = shopOwnerRepository.getUserByEmail(email);
-        System.out.println(customer.getName());
+        System.out.println(email);
+        ShopOwner user = shopOwnerRepository.getUserByEmail(email);
+        System.out.println(user);
         model.addAttribute("title", "dashboard");
-        model.addAttribute("customer", customer);
+        model.addAttribute("user", user);
 		return "dashboard";
     }
 }

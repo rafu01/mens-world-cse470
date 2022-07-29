@@ -1,5 +1,6 @@
 package com.mensworld.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -10,12 +11,19 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.mensworld.dao.UserRepository;
+import com.mensworld.entities.User;
+
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Configuration
 @EnableWebSecurity
 public class CustomerConfig extends WebSecurityConfigurerAdapter{
+	@Autowired
+	private UserRepository userRepository;
 	@Bean
 	public UserDetailsService getUserDetailService() {
-		return new CustomerDetailsServiceImpl();
+		return new UserDetailsServiceImpl();
 	}
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
@@ -35,10 +43,29 @@ public class CustomerConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// setting up role based permission
-		http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
-		.antMatchers("/user/**").hasRole("USER")
-		.antMatchers("/**").permitAll().and().formLogin().loginPage("/login").defaultSuccessUrl("/user/dashboard").and().csrf().disable();
-		http.csrf().disable();
+		// http.exceptionHandling().accessDeniedPage("/login");
+		http.csrf().disable().authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
+		.antMatchers("/customer/**").hasRole("CUSTOMER")
+		.antMatchers("/shop/**").hasRole("SHOP")
+		.antMatchers("/**").permitAll().and().formLogin().loginPage("/login").failureUrl("/login-error")
+		.successHandler((request, response, authentication) -> {
+			// run custom logics upon successful login
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			String email = userDetails.getUsername();
+			User user = userRepository.getUserByEmail(email);
+			String role = user.getRole();
+			String redirectURL = request.getContextPath();
+
+			if (role.equals("ROLE_CUSTOMER")) {
+				redirectURL = "customer/dashboard";
+			} else if (role.equals("ROLE_SHOP")) {
+				redirectURL = "shop/dashboard";
+			}
+			else if(role.equals("ROLE_ADMIN")){
+				redirectURL = "admin/";
+			}
+			response.sendRedirect(redirectURL);
+		});
 	}
 }
 

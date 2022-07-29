@@ -6,21 +6,23 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.mensworld.dao.CustomerRepository;
+import com.mensworld.dao.UserRepository;
 import com.mensworld.entities.Customer;
+import com.mensworld.entities.User;
 
 
-public class CustomerDetailsServiceImpl implements UserDetailsService{
+public class UserDetailsServiceImpl implements UserDetailsService{
 	@Autowired
-	private CustomerRepository customerRepository;
+	private UserRepository userRepository;
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Customer customer =customerRepository.getUserByEmail(email);
-		if(customer==null) {
-			customer = customerRepository.findByEmail(email);
-			if(customer==null)
+		User user =userRepository.getUserByEmail(email);
+		if(user==null) {
+			user = userRepository.findByEmail(email);
+			if(user==null)
 				throw new UsernameNotFoundException("could not find user");
 		}
-		CustomUserDetails customUserDetails = new CustomUserDetails(customer);
+		CustomUserDetails customUserDetails = new CustomUserDetails(user);
 		return customUserDetails;
 	}
 
