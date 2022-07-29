@@ -62,7 +62,7 @@ public class CustomerConfig extends WebSecurityConfigurerAdapter{
 				redirectURL = "shop/dashboard";
 			}
 			else if(role.equals("ROLE_ADMIN")){
-				redirectURL = "admin/";
+				redirectURL = "admin/dashboard";
 			}
 			response.sendRedirect(redirectURL);
 		});
