@@ -21,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.mensworld.dao.CustomerRepository;
 import com.mensworld.dao.ProductsRepository;
 import com.mensworld.dao.ShopOwnerRepository;
+import com.mensworld.dao.UserRepository;
 import com.mensworld.entities.Customer;
 import com.mensworld.entities.Product;
 import com.mensworld.entities.ShopOwner;
@@ -37,11 +38,20 @@ public class MainController {
 	private ProductsRepository productsRepository;
 	@Autowired
 	private ShopOwnerRepository shopownerRepository;
+	@Autowired
+	private UserRepository userRepository;
 	@GetMapping("/")
 	public String home(Model model, Principal principal) {
 		model.addAttribute("title", "men's world");
-		Object user = isLogged(principal);
-		model.addAttribute("user", user);
+		try{
+			String email = principal.getName();
+			User user = userRepository.getUserByEmail(email);
+			model.addAttribute("user", user);
+		}
+		catch(Exception e){
+
+		}
+		model.addAttribute("title", "Men's world");
 		// Customer us = new Customer();
 		// System.out.print(us.getId());
 		// customerRepository.save(us);
@@ -160,8 +170,5 @@ public class MainController {
 		model.addAttribute("product",product);
 		return "singleproduct";
 	}
-	@GetMapping(value = ("/add-product"))
-	public String addProduct(){
-		return "addproduct";
-	}
+	
 }

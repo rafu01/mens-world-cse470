@@ -68,10 +68,10 @@
                   </section>
                   <section th:if="${user!=null}">
                     <div class="buttons">
-                      <a class="button is-primary" th:href="@{/}">
+                      <a class="button is-primary" th:href="@{/{id}/dashboard/(id=${user.role.substring(5,user.role.length()).toLowerCase()})}">
                         <strong th:text="${user.name}"></strong>
                       </a>
-                      <a class="button is-light" th:href="@{/customer/dashboard}">
+                      <a class="button is-light" th:href="@{/{id}/dashboard/(id=${user.role.substring(5,user.role.length()).toLowerCase()})}">
                         dashboard
                       </a>
                     </div>

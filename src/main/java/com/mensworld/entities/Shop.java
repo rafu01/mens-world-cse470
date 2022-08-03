@@ -21,6 +21,11 @@ public class Shop {
 	private int id;
 	private String name;
 	private String description;
+	@OneToMany(cascade = CascadeType.ALL,fetch =FetchType.LAZY)
+	private List<Order> orders;
+	@OneToMany(cascade = CascadeType.ALL,fetch =FetchType.LAZY)
+	private List<Product> products;
+	private boolean approved_status;
 	public int getId() {
 		return id;
 	}
@@ -45,6 +50,16 @@ public class Shop {
 	public void setProducts(List<Product> products) {
 		this.products = products;
 	}
-	@OneToMany(cascade = CascadeType.ALL,fetch =FetchType.LAZY)
-	private List<Product> products;
+	public List<Order> getOrders() {
+		return orders;
+	}
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+	public boolean getApproved_status(){
+		return approved_status;
+	}
+	public void setApproved_status(boolean approved_status){
+		this.approved_status = approved_status;
+	}
 }

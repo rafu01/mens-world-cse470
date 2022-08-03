@@ -46,7 +46,7 @@ public class CustomerConfig extends WebSecurityConfigurerAdapter{
 		// http.exceptionHandling().accessDeniedPage("/login");
 		http.csrf().disable().authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
 		.antMatchers("/customer/**").hasRole("CUSTOMER")
-		.antMatchers("/shop/**").hasRole("SHOP")
+		.antMatchers("/myshop/**").hasRole("SHOP")
 		.antMatchers("/**").permitAll().and().formLogin().loginPage("/login").failureUrl("/login-error")
 		.successHandler((request, response, authentication) -> {
 			// run custom logics upon successful login
