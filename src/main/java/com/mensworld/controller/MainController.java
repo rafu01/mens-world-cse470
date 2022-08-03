@@ -2,6 +2,7 @@ package com.mensworld.controller;
 
 import java.lang.ProcessBuilder.Redirect;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,15 +14,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.mensworld.dao.CategoryRepository;
 import com.mensworld.dao.CustomerRepository;
 import com.mensworld.dao.ProductsRepository;
 import com.mensworld.dao.ShopOwnerRepository;
 import com.mensworld.dao.UserRepository;
+import com.mensworld.entities.Category;
 import com.mensworld.entities.Customer;
 import com.mensworld.entities.Product;
 import com.mensworld.entities.Shop;
@@ -41,6 +46,8 @@ public class MainController {
 	private ShopOwnerRepository shopownerRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private CategoryRepository categoryRepository;
 	@GetMapping("/")
 	public String home(Model model, Principal principal) {
 		model.addAttribute("title", "men's world");
@@ -153,9 +160,52 @@ public class MainController {
 		// Product x = productsRepository.getReferenceById(36);
 		// x.setName(id);
 		Object user = isLogged(principal);
+		List<Category> categories = categoryRepository.findAll();
+		model.addAttribute("categories", categories);
 		model.addAttribute("user", user);
 		model.addAttribute("title", "products");
 		model.addAttribute("products", allProduct);
+		// System.out.println(allProduct);
+		return "products";
+	}
+	@PostMapping(value=("/products"))
+	public String search_products(Model model, Principal principal, @RequestParam(required = false) String name,
+	@RequestParam(required = false) String sort, @RequestParam(required = false) String search_type, @RequestParam(required = false) String category){
+		List<Product> allProduct = productsRepository.findAll();
+		Object user = isLogged(principal);
+		List<Product> query_product = new ArrayList<Product>();
+		if(name.equals("") && category.equals("")){
+			for (Product product : allProduct) {
+				if(product.getName().contains(name)){
+					for (Category cat : product.getCategories()) {
+						if(cat.getName()==category){
+							query_product.add(product);
+						}
+					}
+				}
+			}
+		}
+		else if(!name.equals("")){
+			for (Product product : allProduct) {
+				if(product.getName().contains(name)){
+					query_product.add(product);
+				}
+			}
+		}
+		else if(!category.equals("")){
+			for (Product product : allProduct) {
+				for (Category cat : product.getCategories()) {
+					if(cat.getName().equals(category)){
+						query_product.add(product);
+					}
+				}
+			}
+		}
+		List<Category> categories = categoryRepository.findAll();
+		model.addAttribute("categories", categories);
+		model.addAttribute("user", user);
+		model.addAttribute("title", "products");
+		model.addAttribute("products", query_product);
 		// System.out.println(allProduct);
 		return "products";
 	}

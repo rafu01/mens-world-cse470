@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 public class Order {
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,10 +22,11 @@ public class Order {
 	private int id;
 	private String name;
     private int quantity;
-    @OneToOne(cascade = CascadeType.ALL,fetch =FetchType.LAZY)
-    private Shop shop;
+    // @OneToOne(cascade = CascadeType.ALL,fetch =FetchType.LAZY)
+    // private Shop shop;
     @OneToMany(cascade = CascadeType.ALL,fetch =FetchType.LAZY)
     private List<Product> products;
+	private int total;
     public int getId() {
 		return id;
 	}
@@ -44,16 +45,22 @@ public class Order {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-    public Shop getShop() {
-		return shop;
-	}
-	public void setShop(Shop shop) {
-		this.shop = shop;
-	}
+    // public Shop getShop() {
+	// 	return shop;
+	// }
+	// public void setShop(Shop shop) {
+	// 	this.shop = shop;
+	// }
     public List<Product> getProducts() {
 		return this.products;
 	}
 	public void setProducts(List<Product> products) {
 		this.products = products;
+	}
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
 	}
 }

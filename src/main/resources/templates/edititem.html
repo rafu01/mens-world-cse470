@@ -3,12 +3,16 @@
     <nav th:replace="base::navbar"></nav>
 </head>
 <body>
-    <form th:action="@{/shop/add-items}" method="post" enctype="multipart/form-data"> 
-        <div class="column is-half is-offset-one-quarter">    
+    <form th:action="@{/shop/product/save-items/{id}(id=${product.id})}" method="post" enctype="multipart/form-data"> 
+        <div class="column is-half is-offset-one-quarter"> 
+          <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert"> 
+            <p class="text-center" th:text="${session.message.content}"> <p>
+            <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+          </div>    
           <div class="field">
             <label class="label">Name of Product</label>
             <div class="control">
-              <input class="input is-success" name="name" type="text" placeholder="name" value="">
+              <input class="input is-success" name="name" type="text" placeholder="name" th:value="${product.name}">
             </div>
             <!-- <p class="help is-danger">This email is invalid</p> -->
           </div>
@@ -16,7 +20,7 @@
           <div class="field">
             <label class="label">Description</label>
             <p class="control">
-                <textarea class="textarea is-success" name="description" placeholder="description"></textarea>
+                <textarea class="textarea is-success" name="description" placeholder="description" th:text="${product.description}"></textarea>
             </p>
           </div>
 
@@ -25,37 +29,23 @@
           <div class="field column is-half">
             <label class="label">Price</label>
             <p class="control">
-              <input class="input is-success" name="price" type="number" placeholder="price">
+              <input class="input is-success" name="price" type="number" placeholder="price" th:value="${product.price}">
             </p>
           </div>
           <div class="field column is-half">
             <label class="label">Quantity</label>
             <p class="control">
-              <input class="input is-success" name="quantity" type="number" placeholder="quantity">
+              <input class="input is-success" name="quantity" type="number" placeholder="quantity" th:value="${product.quantity}">
             </p>
           </div>
           
           </div>
-          <div class="columns">
-          <div class="field column is-half">
+          <div class="field">
             <label class="label">Image</label>
             <p class="control">
                 <input type="file" name="file" >
             </p>
           </div>
-          <div class="field">
-            <label class="label">Select Category</label>
-            <div class="control">
-              <div class="select">
-                <select name="category">
-                  <div th:each="category: ${categories}">
-                   <option th:text="${category.name}"></option>
-                </select>
-              </div>
-            </div>
-          </div>
-          </div>
-
           <br>
           <div class="field is-grouped">
             <div class="control">

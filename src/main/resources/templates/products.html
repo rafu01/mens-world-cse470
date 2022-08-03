@@ -4,15 +4,45 @@
 </head>
 <body>
     <div class="container">
+      <form th:action="@{/products}" method="post">
       <div class="columns is-centered">
-        <div class="column is-half">
-          <input class="input" type="text" placeholder="calvin klein">
+        <div class="column is-5">
+          <input class="input" name="name" type="text" placeholder="product name">
         </div>
-        <div class="column is-narrow">
-          <button class="button is-primary">Search</button>
+        <div class="column is-2">
+            <div class="select">
+              <select name="sort">
+                <option selected disabled>Sort by price</option>
+                <option>Sort by price (Low to High)</option>
+                <option>Sort by price (High to Low)</option>
+              </select>
+            </div>
+        </div>
+        <div class="column is-2">
+          <div class="select">
+            <select name="search_type">
+              <option>Search Product</option>
+              <option>Search Shop</option>
+            </select>
+          </div>
+      </div>
+      <div class="column is-2">
+        <div class="select">
+          <select name="category">
+            <option selected disabled>Category</option>
+            <div th:each="category: ${categories}">
+              <option th:text="${category.name}"></option>
+            </div>
+          </select>
+        </div>
+    </div>
+        <div class="column is-1 is-narrow">
+          <button class="button is-link">Search</button>
         </div>
       </div>
+    </form>
     </div>
+
     <div class="container">
     <div class="columns is-multiline is-centered">
             <div th:each="product: ${products}" class="column is-one-quarter ">

@@ -6,16 +6,53 @@
 	</head>
 	<body>
         <br><br>
+        <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert"> 
+            <p class="text-center" th:text="${session.message.content}"> <p>
+            <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+          </div> 
         <div class="columns center">
             <div class="column is-one-third center">
-                <a class="button is-primary is-fullwidth"> edit shop</a>
+                <a href="/shop/edit" class="button is-primary is-fullwidth"> edit shop</a>
             </div>
             <div class="column is-one-third center">
                 <a href="/shop/add-items" class="button is-link is-fullwidth"> add item</a>
             </div>
             <div class="column is-one-third center">
-                <a class="button is-info is-fullwidth"> view shop</a>
+                <a href="/shop/orders" class="button is-info is-fullwidth"> view orders</a>
             </div>
+        </div>
+        <div class="container">
+            <div class="column is-half is-offset-one-quarter center">
+                <b>All Products</b>
+            </div>
+            <table class="table is-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>View</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <div th:each="product: ${products}">
+                        <tr>
+                            <td><p th:text="${product.id}"></p></td>
+                            <td><p th:text="${product.name}"></p></td>
+                            <td><p th:text="${product.description}"></p></td>
+                            <td><p th:text="${product.quantity}"></p></td>
+                            <td><p th:text="${'$'+product.price}"></p></td>
+                            <td><a th:href="@{/product/{id}(id=${product.id})}" class="button is-success"> View </a></td>
+                            <td><a th:href="@{/shop/product/edit/{id}(id=${product.id})}" class="button is-info"> Edit </a></td>
+                            <td><a th:href="@{/shop/product/delete/{id}(id=${product.id})}" class="button is-danger"> Delete </a></td>
+                        </tr>
+                    </div>
+                </tbody>
+            </table>
         </div>
 	</body>
 </html>
