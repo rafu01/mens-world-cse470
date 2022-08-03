@@ -24,6 +24,7 @@ import com.mensworld.dao.ShopOwnerRepository;
 import com.mensworld.dao.UserRepository;
 import com.mensworld.entities.Customer;
 import com.mensworld.entities.Product;
+import com.mensworld.entities.Shop;
 import com.mensworld.entities.ShopOwner;
 import com.mensworld.entities.User;
 import com.mensworld.utilities.Message;
@@ -60,8 +61,8 @@ public class MainController {
 	public Object isLogged(Principal principal){
 		try{
 			String email = principal.getName();
-			Customer customer = customerRepository.getUserByEmail(email);
-			return customer;
+			User user = userRepository.getUserByEmail(email);
+			return user;
 		}
 		catch(Exception e){
 			// System.out.println(e);
@@ -120,7 +121,10 @@ public class MainController {
 			user.setPassword(passwordEncoder.encode(password));
 			user.setRole(type);
 			if(type.equals("ROLE_SHOP")){
-				this.shopownerRepository.save((ShopOwner)user);
+				Shop shop = new Shop();
+				ShopOwner shopowner = (ShopOwner)user;
+				shopowner.setShop(shop);
+				this.shopownerRepository.save(shopowner);
 			}
 			else {
 				this.customerRepository.save((Customer)user);
@@ -148,18 +152,18 @@ public class MainController {
 		List<Product> allProduct = productsRepository.findAll();
 		// Product x = productsRepository.getReferenceById(36);
 		// x.setName(id);
-		Object customer = isLogged(principal);
-		model.addAttribute("customer", customer);
-		model.addAttribute("title", "signup");
+		Object user = isLogged(principal);
+		model.addAttribute("user", user);
+		model.addAttribute("title", "products");
 		model.addAttribute("products", allProduct);
 		// System.out.println(allProduct);
 		return "products";
 	}
 	public Product createProd(){
 		Product p = new Product();
-		p.setName("shoe#"+4);
-		p.setPrice("300");
-		p.setQuantity("10");
+		// p.setName("shoe#"+4);
+		// p.setPrice("300");
+		// p.setQuantity("10");
 		return p;
 	}
 	@GetMapping(value = ("/product/{id}"))

@@ -21,12 +21,11 @@ public class Product {
 	private int id;
 	private String name;
 	private String description;
-	private String price;
-	private String quantity;
+	private Integer price;
+	private Integer quantity;
 	@OneToMany(cascade = CascadeType.ALL,fetch =FetchType.LAZY)
 	private List<Category> categories;
-	@Column(nullable = true, length = 64)
-    private String image;
+	private byte[] image;
 	public int getId() {
 		return id;
 	}
@@ -51,22 +50,25 @@ public class Product {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getPrice() {
+	public Integer getPrice() {
 		return price;
 	}
-	public void setPrice(String price) {
+	public void setPrice(Integer price) {
 		this.price = price;
 	}
-	public String getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
-	public void setQuantity(String quantity) {
+	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
-	public String getImage() {
+	public byte[] getImage() {
 		return image;
 	}
-	public void setImage(String image) {
+	public void setImage(byte[] image) {
 		this.image = image;
+	}
+	public String setImageBase64(byte[] image) throws Exception{
+		return new String(image, "UTF-8");
 	}
 }
