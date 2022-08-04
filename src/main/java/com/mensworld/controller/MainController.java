@@ -25,7 +25,9 @@ import com.mensworld.dao.CategoryRepository;
 import com.mensworld.dao.CustomerRepository;
 import com.mensworld.dao.ProductsRepository;
 import com.mensworld.dao.ShopOwnerRepository;
+import com.mensworld.dao.ShopRepository;
 import com.mensworld.dao.UserRepository;
+import com.mensworld.entities.Cart;
 import com.mensworld.entities.Category;
 import com.mensworld.entities.Customer;
 import com.mensworld.entities.Product;
@@ -48,6 +50,8 @@ public class MainController {
 	private UserRepository userRepository;
 	@Autowired
 	private CategoryRepository categoryRepository;
+	@Autowired 
+	private ShopRepository shopRepository;
 	@GetMapping("/")
 	public String home(Model model, Principal principal) {
 		model.addAttribute("title", "men's world");
@@ -153,7 +157,7 @@ public class MainController {
 		return "selectsignup";
 	}
 	@GetMapping("/products")
-	public String products(Model model, Principal principal){
+	public String products(Model model, Principal principal, HttpSession session){
 		// Product p = createProd();
 		// productsRepository.save(p);
 		List<Product> allProduct = productsRepository.findAll();
@@ -166,6 +170,8 @@ public class MainController {
 		model.addAttribute("title", "products");
 		model.addAttribute("products", allProduct);
 		// System.out.println(allProduct);
+		Cart cart =(Cart) session.getAttribute("cart");
+		model.addAttribute("cart",cart);
 		return "products";
 	}
 	@PostMapping(value=("/products"))
@@ -173,39 +179,51 @@ public class MainController {
 	@RequestParam(required = false) String sort, @RequestParam(required = false) String search_type, @RequestParam(required = false) String category){
 		List<Product> allProduct = productsRepository.findAll();
 		Object user = isLogged(principal);
-		List<Product> query_product = new ArrayList<Product>();
-		if(name.equals("") && category.equals("")){
-			for (Product product : allProduct) {
-				if(product.getName().contains(name)){
+		if(search_type.equals("Search Product")){
+			List<Product> query_product = new ArrayList<Product>();
+			if(name.equals("") && category.equals("")){
+				for (Product product : allProduct) {
+					if(product.getName().contains(name)){
+						for (Category cat : product.getCategories()) {
+							if(cat.getName()==category){
+								query_product.add(product);
+							}
+						}
+					}
+				}
+			}
+			else if(!name.equals("")){
+				for (Product product : allProduct) {
+					if(product.getName().contains(name)){
+						query_product.add(product);
+					}
+				}
+			}
+			else if(!category.equals("")){
+				for (Product product : allProduct) {
 					for (Category cat : product.getCategories()) {
-						if(cat.getName()==category){
+						if(cat.getName().equals(category)){
 							query_product.add(product);
 						}
 					}
 				}
 			}
+			model.addAttribute("products", query_product);
 		}
-		else if(!name.equals("")){
-			for (Product product : allProduct) {
-				if(product.getName().contains(name)){
-					query_product.add(product);
+		else{
+			List<Shop> allshops =shopRepository.findAll();
+			List<Shop> query_shop = new ArrayList<Shop>();
+			for(Shop shop:allshops){
+				if(shop.getName().contains(name)){
+					query_shop.add(shop);
 				}
 			}
-		}
-		else if(!category.equals("")){
-			for (Product product : allProduct) {
-				for (Category cat : product.getCategories()) {
-					if(cat.getName().equals(category)){
-						query_product.add(product);
-					}
-				}
-			}
+			model.addAttribute("shops", query_shop);
 		}
 		List<Category> categories = categoryRepository.findAll();
 		model.addAttribute("categories", categories);
 		model.addAttribute("user", user);
-		model.addAttribute("title", "products");
-		model.addAttribute("products", query_product);
+		model.addAttribute("title", "search");
 		// System.out.println(allProduct);
 		return "products";
 	}

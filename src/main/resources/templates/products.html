@@ -45,7 +45,7 @@
 
     <div class="container">
     <div class="columns is-multiline is-centered">
-            <div th:each="product: ${products}" class="column is-one-quarter ">
+            <div th:if="${products!=null}" th:each="product: ${products}" class="column is-one-quarter ">
               <a th:href="@{/product/{id}(id=${product.id})}">
                 <div class="card">
                     <div class="card-image">
@@ -62,6 +62,29 @@
                       <div class="content">
                         <p th:text="${'Price: $' + product.price}"></p>
                         <p th:text="${'Quantity: ' + product.quantity}"></p>
+                        <a th:href="@{/add-to-cart/{id}(id=${product.id})}" class="button is-info"><i class="fas fa-solid fa-cart-plus"></i></a>
+                        <p class="button is-danger"><i class="fas fa-solid fa-heart is-right"></i></p>
+                      </div>
+                    </div>
+                  </div>   
+                  </a>     
+            </div>
+            <div th:if="${shops!=null}" th:each="shop: ${shops}" class="column is-one-quarter ">
+              <a th:href="@{/shop/{id}(id=${shop.id})}">
+                <div class="card">
+                    <div class="card-image">
+                      <figure class="image is-4by3">
+                        <img src="/img/shopicon.jpg" alt="Placeholder image">
+                      </figure>
+                    </div>
+                    <div class="card-content">
+                      <div class="media">
+                        <div class="media-content">
+                          <p class="title is-4" th:text="${shop.name}"></p>
+                        </div>
+                      </div>                  
+                      <div class="content">
+                        <p th:text="${'Description: ' + shop.description}"></p>
                       </div>
                     </div>
                   </div>   
