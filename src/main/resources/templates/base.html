@@ -79,9 +79,18 @@
                       <a class="button is-primary" th:href="@{/{id}/dashboard/(id=${user.role.substring(5,user.role.length()).toLowerCase()})}" >
                         <strong th:text="${user.name}"></strong>
                       </a>
-                      <a  class="button is-light" th:href="@{/{id}/dashboard/(id=${user.role.substring(5,user.role.length()).toLowerCase()})}">
+                      
+                      <a class="button is-light" th:href="@{/{id}/dashboard/(id=${user.role.substring(5,user.role.length()).toLowerCase()})}">
                         dashboard
                       </a>
+                      <section th:if="${user.role.substring(5,user.role.length()).toLowerCase().equals('customer')}">
+                        <div th:if="${cart!=null}">
+                          <a class="button is-danger" th:href="@{/cart}"><i class="fas fa-shopping-cart"></i><span th:text="${cart.quantity}"></span></a>
+                        </div>
+                        <div th:if="${cart==null}">
+                          <a class="button is-danger" th:href="@{/cart}"><i class="fas fa-shopping-cart"></i></a>
+                        </div>
+                      </section>
                     </div>
                   </section>
                 </div>
