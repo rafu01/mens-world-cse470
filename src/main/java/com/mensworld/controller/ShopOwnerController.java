@@ -116,7 +116,7 @@ public class ShopOwnerController {
         List<Category> cat = categoryRepository.findAll();
         for (Category category2 : cat) {
             if(category2.getName().equals(category)){
-                product.setCategories(new ArrayList<Category>(Arrays.asList(category2)));
+                product.setCategory(category2);
             }
         }
         if(file!=null) {
@@ -176,6 +176,7 @@ public class ShopOwnerController {
                 break;
             }
         }
+        product.setCategory(null);
         this.productsRepository.delete(product);
         model.addAttribute("user", user);
         model.addAttribute("product", product);

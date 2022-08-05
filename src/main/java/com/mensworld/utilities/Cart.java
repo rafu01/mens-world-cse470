@@ -1,4 +1,4 @@
-package com.mensworld.entities;
+package com.mensworld.utilities;
 
 import java.util.List;
 
@@ -12,24 +12,26 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "cart")
+import com.mensworld.entities.Product;
+
+// @Entity
+// @Table(name = "cart")
 public class Cart {
-    @Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
-	private int id;
+    // @Id
+	// @GeneratedValue(strategy = GenerationType.AUTO)
+	// @Column(name = "id")
+	// private int id;
 	private String name;
     private int quantity;
-    @OneToMany(cascade = CascadeType.ALL,fetch =FetchType.LAZY)
-    private List<Product> products;
+    // @OneToMany(cascade = CascadeType.ALL,fetch =FetchType.LAZY)
+    private List<Pair> products;
 	private int total;
-    public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+    // public int getId() {
+	// 	return id;
+	// }
+	// public void setId(int id) {
+	// 	this.id = id;
+	// }
 	public String getName() {
 		return name;
 	}
@@ -37,16 +39,19 @@ public class Cart {
 		this.name = name;
 	}
     public int getQuantity() {
-		quantity = products.size();
-		return quantity;
+		this.quantity=0;
+		for(Pair pair:products){
+			this.quantity+=pair.getQuantity();
+		}
+		return this.quantity;
 	}
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-    public List<Product> getProducts() {
+    public List<Pair> getProducts() {
 		return this.products;
 	}
-	public void setProducts(List<Product> products) {
+	public void setProducts(List<Pair> products) {
 		this.products = products;
 	}
 	public int getTotal() {
@@ -58,7 +63,8 @@ public class Cart {
 	}
     public int calculateTotal(){
         int temp_total = 0;
-        for (Product product : products) {
+        for (Pair pair : products) {
+			Product product = pair.getProduct();
             temp_total+=product.getPrice();
         }
         return temp_total;

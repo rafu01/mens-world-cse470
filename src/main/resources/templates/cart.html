@@ -4,29 +4,39 @@
 </head>
 <body>
     <div class="container">
-
+        <div class="card">
         <table class="table is-striped">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Price</th>
+                    <th>Quantity</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <div th:if="${cart!=null}" th:each="product: ${products}">
+                <div th:if="${cart!=null}" th:each="pair: ${pairs}">
                     <!-- <form th:action="@{}" method="post"> -->
                     <tr>
-                        <td><p th:text="${product.id}"></p></td>
-                        <td><p th:text="${product.name}"></p></td>
-                        <td><p th:text="${'$'+product.price}"></p></td>
-                        <td ><a th:href="@{/delete-from-cart/{id}(id=${product.id})}" class="button is-danger">delete</a></td>
+                        <td><p th:text="${pair.product.id}"></p></td>
+                        <td><p th:text="${pair.product.name}"></p></td>
+                        <td><p th:text="${'$'+pair.product.price}"></p></td>
+                        <td><p th:text="${pair.quantity}"></p></td>
+                        <td ><a th:href="@{/delete-from-cart/{id}(id=${pair.product.id})}" class="button is-danger">delete</a></td>
                     </tr>
                     <!-- </form> -->
                 </div>
+                <div th:if="${cart==null}" class="card-content">
+                   <tr>
+                    <td>
+                        <p> Your cart is currently empty</p>
+                    </td>
+                   </tr>
+                </div>
             </tbody>
         </table>
+    </div>
     </div>
 </body>
 </html>

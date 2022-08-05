@@ -67,7 +67,7 @@
                         Log in
                       </a>
                       <div th:if="${cart!=null}">
-                        <a class="button is-danger" th:href="@{/cart}"><i class="fas fa-shopping-cart"></i><span th:text="${cart.products.size()}"></span></a>
+                        <a class="button is-danger" th:href="@{/cart}"><i class="fas fa-shopping-cart"></i><span th:text="${cart.quantity}"></span></a>
                       </div>
                       <div th:if="${cart==null}">
                         <a class="button is-danger" th:href="@{/cart}"><i class="fas fa-shopping-cart"></i></a>

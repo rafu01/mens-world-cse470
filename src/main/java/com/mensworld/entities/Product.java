@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -23,17 +24,17 @@ public class Product {
 	private String description;
 	private Integer price;
 	private Integer quantity;
-	@OneToMany(cascade = CascadeType.ALL,fetch =FetchType.LAZY)
-	private List<Category> categories;
+	@OneToOne(cascade = CascadeType.ALL, fetch =FetchType.LAZY)
+	private Category category;
 	private byte[] image;
 	public int getId() {
 		return id;
 	}
-	public List<Category> getCategories() {
-		return categories;
+	public Category getCategory() {
+		return category;
 	}
-	public void setCategories(List<Category> categories) {
-		this.categories = categories;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 	public void setId(int id) {
 		this.id = id;

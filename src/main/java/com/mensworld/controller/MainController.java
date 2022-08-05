@@ -27,13 +27,13 @@ import com.mensworld.dao.ProductsRepository;
 import com.mensworld.dao.ShopOwnerRepository;
 import com.mensworld.dao.ShopRepository;
 import com.mensworld.dao.UserRepository;
-import com.mensworld.entities.Cart;
 import com.mensworld.entities.Category;
 import com.mensworld.entities.Customer;
 import com.mensworld.entities.Product;
 import com.mensworld.entities.Shop;
 import com.mensworld.entities.ShopOwner;
 import com.mensworld.entities.User;
+import com.mensworld.utilities.Cart;
 import com.mensworld.utilities.Message;
 
 @Controller
@@ -53,7 +53,7 @@ public class MainController {
 	@Autowired 
 	private ShopRepository shopRepository;
 	@GetMapping("/")
-	public String home(Model model, Principal principal) {
+	public String home(Model model, Principal principal, HttpSession session) {
 		model.addAttribute("title", "men's world");
 		try{
 			String email = principal.getName();
@@ -63,6 +63,8 @@ public class MainController {
 		catch(Exception e){
 
 		}
+		Cart cart = (Cart) session.getAttribute("cart");
+		model.addAttribute("cart", cart);
 		model.addAttribute("title", "Men's world");
 		// Customer us = new Customer();
 		// System.out.print(us.getId());
@@ -184,10 +186,8 @@ public class MainController {
 			if(name.equals("") && category.equals("")){
 				for (Product product : allProduct) {
 					if(product.getName().contains(name)){
-						for (Category cat : product.getCategories()) {
-							if(cat.getName()==category){
-								query_product.add(product);
-							}
+						if(product.getCategory().getName().equals(category)) {
+							query_product.add(product);
 						}
 					}
 				}
@@ -201,10 +201,8 @@ public class MainController {
 			}
 			else if(!category.equals("")){
 				for (Product product : allProduct) {
-					for (Category cat : product.getCategories()) {
-						if(cat.getName().equals(category)){
-							query_product.add(product);
-						}
+					if(product.getCategory().getName().equals(category)) {
+						query_product.add(product);
 					}
 				}
 			}

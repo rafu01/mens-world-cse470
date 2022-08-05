@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.ui.Model;
 
-import com.mensworld.dao.CartRepository;
+// import com.mensworld.dao.CartRepository;
 import com.mensworld.dao.ProductsRepository;
 import com.mensworld.dao.ShopRepository;
 import com.mensworld.dao.UserRepository;
-import com.mensworld.entities.Cart;
 import com.mensworld.entities.Product;
+import com.mensworld.utilities.Cart;
+import com.mensworld.utilities.Pair;
 
 @Controller
 public class CartController {
@@ -28,27 +29,47 @@ public class CartController {
     private ShopRepository shopRepository;
     @Autowired
     private ProductsRepository productsRepository;
-    @Autowired
-    private CartRepository cartRepository;
+    // @Autowired
+    // private CartRepository cartRepository;
     @GetMapping("/add-to-cart/{id}")
     public RedirectView add_to_cart(@PathVariable int id, Model model, Principal principal, HttpSession session){
         Cart cart = (Cart) session.getAttribute("cart");
         Product product = productsRepository.getReferenceById(id);
         if(cart==null){
             cart = new Cart(); 
-            List<Product> prd = new ArrayList<>();
-            prd.add(product);
-            cart.setProducts(prd);
+            List<Pair> pairs = new ArrayList<>();
+            Pair pair = new Pair();
+            pair.setProduct(product);
+            pair.setQuantity(1);
+            pairs.add(pair);
+            cart.setProducts(pairs);
+            // cart.setProducts(prd);
             cart.calculateTotal();
             cart.getQuantity();
             session.setAttribute("cart", cart);
-            cart.setProducts(new ArrayList<Product>());  
+            // cart.setProducts(new ArrayList<Product>());  
         }
         else{
-            cart.getProducts().add(product);
+            // cart.getProducts().add(product);
+            boolean found = false;
+            for (Pair pair : cart.getProducts()) {
+                if(pair.getProduct().getId()==product.getId()){
+                    pair.setQuantity(pair.getQuantity()+1);
+                    found = true;
+                    break;
+                }
+            }
+            if(found==false){
+                Pair pair = new Pair();
+                pair.setProduct(product);
+                pair.setQuantity(1);
+                cart.getProducts().add(pair);
+            }
             cart.calculateTotal();
             cart.getQuantity();
+            
         }
+        session.setAttribute("cart", cart);
         // cartRepository.save(cart);
         // System.out.println(cart.getProducts().size());
         return new RedirectView("/products");
@@ -57,20 +78,32 @@ public class CartController {
     public String cart(Model model, Principal principal, HttpSession session){
         Cart cart = (Cart) session.getAttribute("cart");
         model.addAttribute("cart", cart);
-        model.addAttribute("products", cart.getProducts());
+        
+        if(cart!=null){
+            List<Pair> pairs = cart.getProducts();
+            model.addAttribute("pairs", pairs);
+        }
         model.addAttribute("title", "carts");
         return "cart";
     }
     @GetMapping("/delete-from-cart/{id}")
     public String delete_from_cart(@PathVariable int id,Model model, Principal principal, HttpSession session){
         Cart cart = (Cart) session.getAttribute("cart");
-        List<Product> products = cart.getProducts();
-        for(int i=0;i<products.size();i++){
-            if(products.get(i).getId()==id)
-                products.remove(i);
+        List<Pair> pairs = cart.getProducts();
+        for(int i=0;i<pairs.size();i++){
+            if(pairs.get(i).getProduct().getId()==id){
+                pairs.get(i).setProduct(null);
+                pairs.remove(i);
+                // break;
+            }
         }
+        pairs = cart.getProducts();
+        // List<Product> products = new ArrayList<>();
+        // for(Pair pair: cart.getProducts()){
+        //     products.add(pair.getProduct());
+        // }
         model.addAttribute("cart", cart);
-        model.addAttribute("products", cart.getProducts());
+        model.addAttribute("pairs", pairs);
         model.addAttribute("title", "carts");
         return "cart";
     }
