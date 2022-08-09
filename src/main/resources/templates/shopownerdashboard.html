@@ -6,6 +6,7 @@
 	</head>
 	<body>
         <br><br>
+        <div class="container">
         <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert"> 
             <p class="text-center" th:text="${session.message.content}"> <p>
             <th:block th:text="${#session.removeAttribute('message')}"></th:block>
@@ -54,5 +55,6 @@
                 </tbody>
             </table>
         </div>
+    </div>
 	</body>
 </html>

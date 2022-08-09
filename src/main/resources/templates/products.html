@@ -3,11 +3,13 @@
     <nav th:replace="base::navbar"></nav>
 </head>
 <body>
+  <section class="middle-content">
+    <br>
     <div class="container">
       <form th:action="@{/products}" method="post">
       <div class="columns is-centered">
         <div class="column is-5">
-          <input class="input" name="name" type="text" placeholder="product name">
+          <input class="input" name="name" type="text" placeholder="search a product">
         </div>
         <div class="column is-2">
             <div class="select">
@@ -37,7 +39,7 @@
         </div>
     </div>
         <div class="column is-1 is-narrow">
-          <button class="button is-link">Search</button>
+          <button class="button is-info">Search</button>
         </div>
       </div>
     </form>
@@ -93,5 +95,6 @@
             </div>
       </div>
     </div>
+  </section>
 </body>
 </html>

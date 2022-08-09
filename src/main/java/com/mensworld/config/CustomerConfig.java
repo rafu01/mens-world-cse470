@@ -43,7 +43,6 @@ public class CustomerConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// setting up role based permission
-		// http.exceptionHandling().accessDeniedPage("/login");
 		http.csrf().disable().authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
 		.antMatchers("/customer/**").hasRole("CUSTOMER")
 		.antMatchers("/shop/**").hasRole("SHOP")
@@ -65,7 +64,7 @@ public class CustomerConfig extends WebSecurityConfigurerAdapter{
 				redirectURL = "admin/dashboard";
 			}
 			response.sendRedirect(redirectURL);
-		});
+		}).and().exceptionHandling().accessDeniedPage("/login");
 	}
 }
 

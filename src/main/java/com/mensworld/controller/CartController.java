@@ -87,7 +87,7 @@ public class CartController {
         return "cart";
     }
     @GetMapping("/delete-from-cart/{id}")
-    public String delete_from_cart(@PathVariable int id,Model model, Principal principal, HttpSession session){
+    public RedirectView delete_from_cart(@PathVariable int id,Model model, Principal principal, HttpSession session){
         Cart cart = (Cart) session.getAttribute("cart");
         List<Pair> pairs = cart.getProducts();
         for(int i=0;i<pairs.size();i++){
@@ -104,9 +104,9 @@ public class CartController {
         // }
         cart.calculateTotal();
         model.addAttribute("cart", cart);
-        model.addAttribute("pairs", pairs);
-        model.addAttribute("title", "carts");
-        return "cart";
+        // model.addAttribute("pairs", pairs);
+        // model.addAttribute("title", "carts");
+        return new RedirectView("/cart");
     }
     @GetMapping(value=("/increment-quantity/{id}"))
 	public RedirectView increment_quantity(@PathVariable int id,Model model, Principal principal, HttpSession session){

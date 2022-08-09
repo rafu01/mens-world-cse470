@@ -95,6 +95,9 @@ public class MainController {
 	}
 	@GetMapping("/login")
 	public String login(Model model, Principal principal){
+		if (principal!=null) {
+			return "redirect:/";
+		}
 		model.addAttribute("title","login");
 		return "login";
 		// if(isLogged(principal)==null){
@@ -110,6 +113,7 @@ public class MainController {
 		// 	return new RedirectView("dashboard");
 		// }
 	}
+	
 	@GetMapping("/login-error")
 	public String login_fail(Model model,HttpSession session){
 		model.addAttribute("title","login");
