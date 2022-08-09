@@ -54,6 +54,7 @@ public class CustomerController {
 		String email = principal.getName();
 		Customer customer = customerRepository.getUserByEmail(email);
 		List<Product> favorite = customer.getFavorite();
+		System.out.println(favorite.size());
 		model.addAttribute("user", customer);
 		model.addAttribute("favorite", favorite);
 		model.addAttribute("title", "favorite");

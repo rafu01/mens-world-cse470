@@ -64,7 +64,7 @@
                         <p th:text="${'Quantity: ' + product.quantity}"></p>
                         <br>
                         <a th:href="@{/add-to-cart/{id}(id=${product.id})}" class="button is-info"><i class="fas fa-solid fa-cart-plus"></i></a>
-                        <p class="button is-danger is-pulled-right"><a th:href="@{/customer/add-favorite/{id}(id=${product.id})}"><i class="fas fa-solid fa-heart"></i></a></p>
+                        <p class="button is-danger is-pulled-right" th:href="@{/customer/add-favorite/{id}(id=${product.id})}"><i class="fas fa-solid fa-heart"></i></p>
                       </div>
                     </div>
                   </div>   
