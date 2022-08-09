@@ -78,8 +78,8 @@ public class CartController {
     public String cart(Model model, Principal principal, HttpSession session){
         Cart cart = (Cart) session.getAttribute("cart");
         model.addAttribute("cart", cart);
-        
         if(cart!=null){
+            cart.calculateTotal();
             List<Pair> pairs = cart.getProducts();
             model.addAttribute("pairs", pairs);
         }
@@ -102,9 +102,40 @@ public class CartController {
         // for(Pair pair: cart.getProducts()){
         //     products.add(pair.getProduct());
         // }
+        cart.calculateTotal();
         model.addAttribute("cart", cart);
         model.addAttribute("pairs", pairs);
         model.addAttribute("title", "carts");
         return "cart";
+    }
+    @GetMapping(value=("/increment-quantity/{id}"))
+	public RedirectView increment_quantity(@PathVariable int id,Model model, Principal principal, HttpSession session){
+        Cart cart = (Cart) session.getAttribute("cart");
+        for(Pair pair: cart.getProducts()){
+            if(pair.getProduct().getId()==id){
+                pair.setQuantity(pair.getQuantity()+1);
+            }
+        }
+        cart.calculateTotal();
+        session.setAttribute("cart", cart);
+        return new RedirectView("/cart");
+    }
+    @GetMapping(value=("/decrement-quantity/{id}"))
+	public RedirectView decrement_quantity(@PathVariable int id,Model model, Principal principal, HttpSession session){
+        Cart cart = (Cart) session.getAttribute("cart");
+        for(Pair pair: cart.getProducts()){
+            if(pair.getProduct().getId()==id){
+                if(pair.getQuantity()==1){
+                    cart.getProducts().remove(pair);
+                    session.setAttribute("cart", cart);
+                    return new RedirectView("/cart");
+                }
+                else
+                    pair.setQuantity(pair.getQuantity()-1);
+            }
+        }
+        cart.calculateTotal();
+        session.setAttribute("cart", cart);
+        return new RedirectView("/cart");
     }
 }

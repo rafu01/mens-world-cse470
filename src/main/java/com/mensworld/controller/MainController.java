@@ -1,13 +1,10 @@
 package com.mensworld.controller;
 
-import java.lang.ProcessBuilder.Redirect;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
-import javax.xml.bind.PrintConversionEvent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -63,8 +60,22 @@ public class MainController {
 		catch(Exception e){
 
 		}
+		List<Product> products;
+		if(productsRepository.findAll().size()>5)
+			products = productsRepository.findAll().subList(0, 6);
+		else
+			products = productsRepository.findAll();
 		Cart cart = (Cart) session.getAttribute("cart");
 		model.addAttribute("cart", cart);
+		model.addAttribute("products", products);
+		List<Product> featured_products = new ArrayList<>();
+		for(Product product: products){
+			if(product.getCategory().getName().equals("Smartphone")){
+				featured_products.add(product);
+			}
+		}
+		System.out.println(featured_products.size());
+		model.addAttribute("featured_products", featured_products);
 		model.addAttribute("title", "Men's world");
 		// Customer us = new Customer();
 		// System.out.print(us.getId());
@@ -240,5 +251,4 @@ public class MainController {
 		model.addAttribute("product",product);
 		return "singleproduct";
 	}
-	
 }

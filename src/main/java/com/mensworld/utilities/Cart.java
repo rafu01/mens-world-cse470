@@ -65,7 +65,7 @@ public class Cart {
         int temp_total = 0;
         for (Pair pair : products) {
 			Product product = pair.getProduct();
-            temp_total+=product.getPrice();
+            temp_total+=product.getPrice()*pair.getQuantity();
         }
         return temp_total;
     }

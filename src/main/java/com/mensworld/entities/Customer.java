@@ -1,9 +1,9 @@
 package com.mensworld.entities;
-import javax.persistence.Column;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Entity
@@ -19,4 +19,19 @@ public class Customer extends User{
     // public void setId(int id) {
 	// 	this.id = id;
 	// }
+	@OneToMany
+	List<Product> favorite;
+	
+	public List<Product> getFavorite(){
+		return this.favorite;
+	}
+	public void setFavorite(List<Product> favorite){
+		this.favorite = favorite;
+	}
+	public void addFavorite(Product product){
+		if(favorite==null){
+			favorite = new ArrayList<Product>();
+		}
+		favorite.add(product);
+	}
 }

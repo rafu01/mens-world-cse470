@@ -4,39 +4,62 @@
 </head>
 <body>
     <div class="container">
-        <div class="card">
-        <table class="table is-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <div th:if="${cart!=null}" th:each="pair: ${pairs}">
-                    <!-- <form th:action="@{}" method="post"> -->
-                    <tr>
-                        <td><p th:text="${pair.product.id}"></p></td>
-                        <td><p th:text="${pair.product.name}"></p></td>
-                        <td><p th:text="${'$'+pair.product.price}"></p></td>
-                        <td><p th:text="${pair.quantity}"></p></td>
-                        <td ><a th:href="@{/delete-from-cart/{id}(id=${pair.product.id})}" class="button is-danger">delete</a></td>
-                    </tr>
-                    <!-- </form> -->
+        <div class="columns">
+            <div class="column is-half">
+                <div class="card">
+                    <table class="table is-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <div th:if="${cart!=null}" th:each="pair: ${pairs}">
+                                <!-- <form th:action="@{}" method="post"> -->
+                                <tr>
+                                    <td><p th:text="${pair.product.id}"></p></td>
+                                    <td><p th:text="${pair.product.name}"></p></td>
+                                    <td><p th:text="${'$'+pair.product.price}"></p></td>
+                                    <td>
+                                        <div>
+                                            <p class="button is-info" th:text="${pair.quantity}"></p>
+                                            &nbsp; &nbsp;
+                                            <a th:href="@{/increment-quantity/{id}(id=${pair.product.id})}" class="button is-success is-outlined">+</a>
+                                            <a th:href="@{/decrement-quantity/{id}(id=${pair.product.id})}" class="button is-danger is-outlined">-</a>
+                                        </div>
+                                    </td>
+                                    <td ><a th:href="@{/delete-from-cart/{id}(id=${pair.product.id})}" class="button is-danger">delete</a></td>
+                                </tr>
+                                <!-- </form> -->
+                            </div>
+                            <div th:if="${cart==null}" class="card-content">
+                               <tr>
+                                <td>
+                                    <p> Your cart is currently empty</p>
+                                </td>
+                               </tr>
+                            </div>
+                        </tbody>
+                    </table>
                 </div>
-                <div th:if="${cart==null}" class="card-content">
-                   <tr>
-                    <td>
-                        <p> Your cart is currently empty</p>
-                    </td>
-                   </tr>
+            </div>
+            <div class="column">
+                <div class="card">
+                    <div class="card-content center">
+                        <h2><b>Total</b></h2>
+                    <div th:if="${cart!=null}">
+                        <div class="center">
+                            <p th:text="${cart.total}"></p>
+                        </div>
+                    </div>
+                    </div>
                 </div>
-            </tbody>
-        </table>
-    </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
