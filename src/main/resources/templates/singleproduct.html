@@ -3,8 +3,23 @@
     <nav th:replace="base::navbar"></nav>
 </head>
 <body>
-    <p th:text="${'product id: '+product.id}"></p>
-    <p th:text="${'product price: '+product.price}"></p>
-    <p th:text="${'product quantity: '+product.quantity}"></p>
+    <br><br>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-half">
+                <img class="product-image" th:src="'data:image/png;base64,' + ${product.setImageBase64(product.image)}" alt="Placeholder image">
+            </div>
+            <div class="column is-half">
+                <p class="subtitle"><b th:text="${product.name}"></b></p>
+                <p class="subtitle"><b th:text="${product.price+'$'}"></b></p>
+                <p class="description" th:text="${product.description}"></p>
+                <p class="description" th:text="${product.category.name}"></p>
+                <a th:href="@{/add-to-cart/{id}(id=${product.id})}" class="button is-info">Add to cart</a>
+            </div>
+        </div>
+    </div>
+    <section>
+
+    </section>
 </body>
 </html>

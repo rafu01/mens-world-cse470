@@ -25,6 +25,14 @@ public class Product {
 	private Integer price;
 	private Integer quantity;
 	@OneToOne(cascade = CascadeType.ALL, fetch =FetchType.LAZY)
+	private Shop shop;
+	public Shop getShop() {
+		return shop;
+	}
+	public void setShop(Shop shop) {
+		this.shop = shop;
+	}
+	@OneToOne(cascade = CascadeType.ALL, fetch =FetchType.LAZY)
 	private Category category;
 	private byte[] image;
 	public int getId() {

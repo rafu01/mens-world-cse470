@@ -21,12 +21,19 @@ public class Customer extends User{
 	// }
 	@OneToMany
 	List<Product> favorite;
-	
+	@OneToMany
+	List<Order> orders;
 	public List<Product> getFavorite(){
 		return this.favorite;
 	}
 	public void setFavorite(List<Product> favorite){
 		this.favorite = favorite;
+	}
+	public List<Order> getOrders(){
+		return this.orders;
+	}
+	public void setOrders(List<Order> orders){
+		this.orders = orders;
 	}
 	public void addFavorite(Product product){
 		if(favorite==null){

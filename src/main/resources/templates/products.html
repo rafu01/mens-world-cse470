@@ -3,7 +3,6 @@
     <nav th:replace="base::navbar"></nav>
 </head>
 <body>
-  <section class="middle-content">
     <br>
     <div class="container">
       <form th:action="@{/products}" method="post">
@@ -60,13 +59,13 @@
                         <div class="media-content">
                           <p class="title is-4" th:text="${product.name}"></p>
                         </div>
-                      </div>                  
+                      </div>                 
                       <div class="content">
                         <p th:text="${'Price: $' + product.price}"></p>
                         <p th:text="${'Quantity: ' + product.quantity}"></p>
                         <br>
                         <a th:href="@{/add-to-cart/{id}(id=${product.id})}" class="button is-info"><i class="fas fa-solid fa-cart-plus"></i></a>
-                        <p class="button is-danger is-pulled-right" th:href="@{/customer/add-favorite/{id}(id=${product.id})}"><i class="fas fa-solid fa-heart"></i></p>
+                        <a class="button is-danger is-pulled-right" th:href="@{/customer/add-favorite/{id}(id=${product.id})}"><i class="fas fa-solid fa-heart"></i></a>
                       </div>
                     </div>
                   </div>   
@@ -94,7 +93,6 @@
                   </a>     
             </div>
       </div>
-    </div>
-  </section>
+    </div>  
 </body>
 </html>

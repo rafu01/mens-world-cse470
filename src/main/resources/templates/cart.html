@@ -28,7 +28,7 @@
                                         <div>
                                             <p class="button is-info" th:text="${pair.quantity}"></p>
                                             &nbsp; &nbsp;
-                                            <a th:href="@{/increment-quantity/{id}(id=${pair.product.id})}" class="button is-success is-outlined">+</a>
+                                            <a th:if="${pair.product.quantity>pair.quantity}" th:href="@{/increment-quantity/{id}(id=${pair.product.id})}" class="button is-success is-outlined">+</a>
                                             <a th:href="@{/decrement-quantity/{id}(id=${pair.product.id})}" class="button is-danger is-outlined">-</a>
                                         </div>
                                     </td>
@@ -51,13 +51,36 @@
                 <div class="card">
                     <div class="card-content center">
                         <h2><b>Total</b></h2>
-                    <div th:if="${cart!=null}">
-                        <div class="center">
-                            <p th:text="${cart.total}"></p>
+                        <div th:if="${cart!=null}">
+                            <div th:if="${cart.coupon==null}" class="center">
+                                <p th:text="${'$'+cart.total}"></p>
+                                <form th:action="@{/add-coupon}" method="post"> 
+                                    <label class="label">Add Coupon: </label>
+                                    <div class="columns">   
+                                    <div class="control column is-half">
+                                        <input class="input" name="coupon" type="text" placeholder="coupon code" value="">
+                                    </div>
+                                    <div class="column is-half">
+                                        <button class="button is-info is-fullwidth">Get discount</button>
+                                </form>
+                            </div>
+                            <div th:if="${cart.coupon!=null}" class="center">
+                                <s th:text="${'$'+cart.total}"></s>
+                                <p th:text="${'$'+cart.total_after_discount}"></p>
+                                <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert"> 
+                                    <p class="text-center" th:text="${session.message.content}"> <p>
+                                    <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    </div>
                 </div>
+            </div>
+        </div>
+        <br> <br>
+        <div class="columns">
+            <div class="column is-half center">
+                <a href="/customer/checkout" class="button is-info is-fullwidth">Confirm & Checkout</a>
             </div>
         </div>
     </div>

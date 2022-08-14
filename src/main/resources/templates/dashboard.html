@@ -4,6 +4,37 @@
     <nav th:replace="base::navbar"></nav>
 </head>
 <body>
-    <p th:utext="${user.name}"></p>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-one-third">
+                <p class="subtitle"><b th:text="${'Howdy, '+ user.name}"></b></p>
+            </div>
+            <div class="column is-one-third">
+                <p class="subtitle">Your Previous Orders</p>
+                <div ></div>
+            </div>
+            <div class="column is-one-third">
+                <p class="subtitle">Your Favorite List</p>
+                <table class="table is-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Add to cart</th>
+                            <th>Remove from favorite</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <div th:each="product: ${user.favorite}">
+                        <tr>
+                            <td><p th:text="${product.name}"></p></td>
+                            <td><a th:href="@{/add-to-cart/{id}(id=${product.id})}" class="button is-info"> Add to cart </a></td>
+                            <td><a th:href="@{/customer/delete-favorite/{id}(id=${product.id})}" class="button is-danger"> Remove </a></td>
+                        </tr>
+                        </div>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

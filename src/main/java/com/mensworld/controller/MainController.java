@@ -74,7 +74,6 @@ public class MainController {
 				featured_products.add(product);
 			}
 		}
-		System.out.println(featured_products.size());
 		model.addAttribute("featured_products", featured_products);
 		model.addAttribute("title", "Men's world");
 		// Customer us = new Customer();
@@ -248,9 +247,11 @@ public class MainController {
 		return p;
 	}
 	@GetMapping(value = ("/product/{id}"))
-	public String singpleProduct(@PathVariable int id, Model model, Principal principal){
+	public String singleProduct(@PathVariable int id, Model model, Principal principal, HttpSession session){
 		Product product = productsRepository.getReferenceById(id);
 		Object customer = isLogged(principal);
+		Cart cart = (Cart) session.getAttribute("cart");
+		model.addAttribute("cart", cart);
 		model.addAttribute("customer", customer);
 		model.addAttribute("product",product);
 		return "singleproduct";

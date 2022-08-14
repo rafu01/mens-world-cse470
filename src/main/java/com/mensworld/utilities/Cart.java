@@ -12,7 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.mensworld.entities.Coupon;
 import com.mensworld.entities.Product;
+import com.mensworld.entities.Shop;
 
 // @Entity
 // @Table(name = "cart")
@@ -21,12 +23,44 @@ public class Cart {
 	// @GeneratedValue(strategy = GenerationType.AUTO)
 	// @Column(name = "id")
 	// private int id;
+	private double tax = 0.15;
+	private double delivery_charge = 3;
 	private String name;
     private int quantity;
     // @OneToMany(cascade = CascadeType.ALL,fetch =FetchType.LAZY)
     private List<Pair> products;
-	private int total;
-    // public int getId() {
+	private double total;
+	private Coupon coupon;
+	public Coupon getCoupon() {
+		return coupon;
+	}
+	public void setCoupon(Coupon coupon) {
+		this.coupon = coupon;
+	}
+	public double total_after_discount;
+	public double total_after_charges;
+    public double getTotal_after_discount(Shop shop, double discount) {
+		total_after_discount=0;
+		if(shop!=null){
+		List<Product> all_product = shop.getProducts();
+		for(Product product:all_product){
+			total_after_discount= total-product.getPrice()*(discount/100);
+		}
+		}
+		return total_after_discount;
+	}
+	public void setTotal_after_discount(double total_after_discount) {
+		this.total_after_discount = total_after_discount;
+	}
+	public double getTotal_after_charges() {
+		total_after_charges = total_after_discount+tax*total_after_discount+delivery_charge;
+		return total_after_charges;
+	}
+	public void setTotal_after_charges(double total_after_charges) {
+
+		this.total_after_charges = total_after_charges;
+	}
+	// public int getId() {
 	// 	return id;
 	// }
 	// public void setId(int id) {
@@ -54,11 +88,11 @@ public class Cart {
 	public void setProducts(List<Pair> products) {
 		this.products = products;
 	}
-	public int getTotal() {
+	public double getTotal() {
         total = calculateTotal();
 		return total;
 	}
-	public void setTotal(int total) {
+	public void setTotal(double total) {
 		this.total = total;
 	}
     public int calculateTotal(){

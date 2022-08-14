@@ -26,6 +26,14 @@ public class Shop {
 	@OneToMany(cascade = CascadeType.ALL,fetch =FetchType.LAZY)
 	private List<Product> products;
 	private boolean approved_status;
+	@OneToMany(cascade = CascadeType.ALL, fetch =FetchType.LAZY)
+	private List<Coupon> coupons;
+	public List<Coupon> getCoupons() {
+		return coupons;
+	}
+	public void setCoupons(List<Coupon> coupons) {
+		this.coupons = coupons;
+	}
 	public int getId() {
 		return id;
 	}
