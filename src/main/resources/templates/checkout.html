@@ -56,6 +56,13 @@
         </div>
         <div class="column is-half">
             <div class="card">
+
+              <div class="center">
+                <p><b>Total</b></p>
+                <p th:text="${'$'+cart.total_after_discount}"></p>
+                <p><b>Total After Tax and Delivery Charge</b></p>
+                <p th:text="${'$'+cart.total_after_charges}"></p>
+            </div>
                 <table class="table is-striped">
                     <thead>
                         <tr>
@@ -90,12 +97,6 @@
                         </div>
                     </tbody>
                 </table>
-                <div class="center">
-                    <p><b>Total</b></p>
-                    <p th:text="${'$'+cart.total_after_discount}"></p>
-                    <p><b>Total After Tax and Delivery Charge</b></p>
-                    <p th:text="${'$'+cart.total_after_charges}"></p>
-                </div>
             </div>
         </div>
     </div>

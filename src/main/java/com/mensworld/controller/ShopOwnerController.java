@@ -55,6 +55,7 @@ public class ShopOwnerController {
 
         model.addAttribute("title", "dashboard");
         model.addAttribute("user", user);
+        model.addAttribute("shop", user.getShop());
         model.addAttribute("products", user.getShop().getProducts());
 		return "shopownerdashboard";
     }

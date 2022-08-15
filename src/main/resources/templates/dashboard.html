@@ -6,15 +6,29 @@
 <body>
     <div class="container">
         <div class="columns">
-            <div class="column is-one-third">
-                <p class="subtitle"><b th:text="${'Howdy, '+ user.name}"></b></p>
+            <div class="column is-half">
+                <p class="subtitle">Your Dashboard</p>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                              <figure class="image is-128x128">
+                                <img class="is-rounded" th:src="@{/img/avatar.png}" alt="Placeholder image">
+                              </figure>
+                            </div>
+                            <div class="media-content">
+                                <p class="subtitle"><b th:text="${'Howdy, '+ user.name}"></b></p>
+                                <br><br>
+                                <h6> Here you'll find your past orders and your favorite list</p>
+                            </div>
+                            </div>
+                    </div>
+                </div>
             </div>
-            <div class="column is-one-third">
-                <p class="subtitle">Your Previous Orders</p>
-                <div ></div>
-            </div>
-            <div class="column is-one-third">
+            
+            <div class="column is-half">
                 <p class="subtitle">Your Favorite List</p>
+                <div class="card">
                 <table class="table is-striped">
                     <thead>
                         <tr>
@@ -34,6 +48,42 @@
                     </tbody>
                 </table>
             </div>
+            </div>
+        </div>
+        <div class="columns">
+            
+            <div class="column is-full">
+                
+                <p class="subtitle">Your Previous Orders</p>
+                <div class="card">
+                <div th:if="${orders!=null}">
+                    <table class="table is-striped">
+                        <thead>
+                            <tr>
+                                <th>Quantity</th>
+                                <th>Products</th>
+                                <th>Total</th>
+                                <!-- <th>Remove from favorite</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <div th:each="order: ${orders}">
+                            <tr>
+                                <td><p th:text="${order.quantity}"></p></td>
+                                    <td>
+                                        <div th:each="product: ${order.getProducts()}">
+                                            <p th:text="${product.name}"></p>
+                                        </div>
+                                    </td>
+                                <td><p th:text="${order.total}"> Add to cart </p></td>
+                                <!-- <td><p th:text="${order.g}"> Remove </p></td> -->
+                            </tr>
+                            </div>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
         </div>
     </div>
 </body>

@@ -6,7 +6,16 @@
 	</head>
 	<body>
         <br><br>
-        <div class="container">
+        <div th:if="${shop.approved_status==false}" class="container">
+            <div class="columns center">
+                <div class="column is-full  center">
+                    <a href="/shop/edit" class="button is-info is-fullwidth"> edit shop</a>
+                    <br>
+                    <p>Kindly wait for approval from admin</p>
+                </div>
+            </div>
+        </div>
+        <div th:if="${shop.approved_status==true}" class="container">
         <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert"> 
             <p class="text-center" th:text="${session.message.content}"> <p>
             <th:block th:text="${#session.removeAttribute('message')}"></th:block>
@@ -32,7 +41,7 @@
             <table class="table is-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Thumb</th>
                         <th>Name</th>
                         <th>Description</th>
                         <th>Quantity</th>
@@ -45,7 +54,9 @@
                 <tbody>
                     <div th:each="product: ${products}">
                         <tr>
-                            <td><p th:text="${product.id}"></p></td>
+                            <td><figure class="image is-48x48">
+                                <img th:src="'data:image/png;base64,' + ${product.setImageBase64(product.image)}">
+                              </figure></td>
                             <td><p th:text="${product.name}"></p></td>
                             <td><p th:text="${product.description}"></p></td>
                             <td><p th:text="${product.quantity}"></p></td>

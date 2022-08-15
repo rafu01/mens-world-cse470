@@ -57,11 +57,13 @@
                                 <form th:action="@{/add-coupon}" method="post"> 
                                     <label class="label">Add Coupon: </label>
                                     <div class="columns">   
-                                    <div class="control column is-half">
-                                        <input class="input" name="coupon" type="text" placeholder="coupon code" value="">
+                                        <div class="control column is-half">
+                                            <input class="input" name="coupon" type="text" placeholder="coupon code" value="">
+                                        </div>
+                                        <div class="column is-half">
+                                            <button class="button is-info is-fullwidth">Get discount</button>
+                                        </div>
                                     </div>
-                                    <div class="column is-half">
-                                        <button class="button is-info is-fullwidth">Get discount</button>
                                 </form>
                             </div>
                             <div th:if="${cart.coupon!=null}" class="center">
@@ -78,8 +80,10 @@
             </div>
         </div>
         <br> <br>
+    </div>
+    <div class="container">
         <div class="columns">
-            <div class="column is-half center">
+            <div class="column is-half is-offset-one-quarter center">
                 <a href="/customer/checkout" class="button is-info is-fullwidth">Confirm & Checkout</a>
             </div>
         </div>

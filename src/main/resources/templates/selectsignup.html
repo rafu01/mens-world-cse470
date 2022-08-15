@@ -6,25 +6,29 @@
 	</head>
 	<body>
         <br><br>
-        <div class="columns center">
-            <div class="column is-half center">
+        <div class="container">
+        <div class="columns is-justify-content-space-around">
+            <div class="column is-one-third center">
                 <div class="card">
                     <div class="card-content">
                       <div class="content">
-                        <a href="/signup/ROLE_CUSTOMER" class="button">Sign up as Customer</a>
+                        <img class="image is-4by3" id="signupoption" th:src="@{/img/customer signup.png}">
+                        <a href="/signup/ROLE_CUSTOMER" class="button is-fullwidth">Sign up as Customer</a>
                       </div>
                     </div>
                   </div>
             </div>
-            <div class="column is-half center">
+            <div class="column is-one-third center">
                 <div class="card">
                     <div class="card-content">
                       <div class="content">
-                        <a href="/signup/ROLE_SHOP" class="button">Sign up your Shop</a>
+                        <img class="image is-4by3" id="signupoption" th:src="@{/img/shop signup.png}">
+                        <a href="/signup/ROLE_SHOP" class="button is-fullwidth">Sign up your Shop</a>
                       </div>
                     </div>
                   </div>
             </div>
           </div>
+        </div>
 	</body>
 </html>

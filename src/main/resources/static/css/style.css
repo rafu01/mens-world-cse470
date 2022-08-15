@@ -176,3 +176,8 @@ color: #fff;
 input, textarea, select{
     border: 1px solid #141414 !important;
 }
+/* .image.is-4by3 {
+    /* padding-top: 0% !important; */
+#signupoption {
+    padding-top: 0%;
+}

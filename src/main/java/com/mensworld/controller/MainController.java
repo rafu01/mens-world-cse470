@@ -163,6 +163,7 @@ public class MainController {
 			if(type.equals("ROLE_SHOP")){
 				Shop shop = new Shop();
 				ShopOwner shopowner = (ShopOwner)user;
+				shop.setApproved_status(true);
 				shopowner.setShop(shop);
 				this.shopownerRepository.save(shopowner);
 			}

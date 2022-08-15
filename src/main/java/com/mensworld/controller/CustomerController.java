@@ -58,8 +58,10 @@ public class CustomerController {
         Customer customer = customerRepository.getUserByEmail(email);
 		Cart cart = (Cart)session.getAttribute("cart");
 		customerRepository.save(customer);
+		List<Order> orders = customer.getOrders();
 		model.addAttribute("cart", cart);
         model.addAttribute("title", "dashboard");
+		model.addAttribute("orders", orders);
         model.addAttribute("user", customer);
 		return "dashboard";
     }
@@ -216,7 +218,8 @@ public class CustomerController {
 		order.setName(name);
 		order.setNumber(number);
 		orderRepository.save(order);
-		model.addAttribute("cart", cart);
+		session.removeAttribute("cart");
+		// model.addAttribute("cart", cart);
 		model.addAttribute("title", "confirmed");
 		model.addAttribute("user",customer);
 		return "order_confirm";
