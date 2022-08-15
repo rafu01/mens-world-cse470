@@ -1,0 +1,39 @@
+<html lang="en">
+<head th:replace="base::header">
+    <nav th:replace="base::navbar"></nav>
+</head>
+<body>
+    <div class="container">
+        <table class="table is-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Favorite List</th>
+                    <th>Past Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                <div th:each="customer: ${customers}">
+                    <tr>
+                        <td><p th:text="${customer.id}"></p></td>
+                        <td><p th:text="${customer.name}"></p></td>
+                        <td><p th:text="${customer.email}"></p></td>
+                        <td th:each="product :${customer.getFavorite()}">
+                            <p th:text="${product.name}"></p>
+                        </td>
+                        <td th:each="order :${customer.getOrders()}">
+                            <div th:each="product: ${order.getProducts()}">
+                                <p th:text="${product.name}"></p>
+                            </div>
+                            <p><b>Total:</b></p>
+                            <p th:text="${'$'+order.total}"></p>
+                        </td>
+                    </tr>
+                </div>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

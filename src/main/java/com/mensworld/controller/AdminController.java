@@ -18,12 +18,16 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.mensworld.dao.AdminRepository;
 import com.mensworld.dao.CategoryRepository;
+import com.mensworld.dao.CustomerRepository;
 import com.mensworld.dao.OrderRepository;
 import com.mensworld.dao.ShopRepository;
+import com.mensworld.dao.UserRepository;
 import com.mensworld.entities.Admin;
 import com.mensworld.entities.Category;
+import com.mensworld.entities.Customer;
 import com.mensworld.entities.Order;
 import com.mensworld.entities.Shop;
+import com.mensworld.entities.User;
 import com.mensworld.utilities.Message;
 
 import net.bytebuddy.dynamic.scaffold.MethodGraph.NodeList;
@@ -39,6 +43,8 @@ public class AdminController {
     private ShopRepository shopRepository;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
     @GetMapping("/dashboard")
     public String dashboard(Model model, Principal principal){
         String email = principal.getName();
@@ -72,7 +78,7 @@ public class AdminController {
         return "addcategory";
     }
     @GetMapping("/all-shops")
-    public String allShops(Model model, Principal principal){
+    public String all_shops(Model model, Principal principal){
         String email = principal.getName();
         Admin user = adminRepository.getUserByEmail(email); 
         List<Shop> shops = shopRepository.findAll();
@@ -80,6 +86,16 @@ public class AdminController {
         model.addAttribute("user",user);
         model.addAttribute("shops", shops);
         return "allshops";
+    }
+    @GetMapping("/all-customers")
+    public String all_customers(Model model, Principal principal){
+        String email = principal.getName();
+        Admin user = adminRepository.getUserByEmail(email); 
+        List<Customer> customers = customerRepository.findAll();
+        model.addAttribute("title", "add category");
+        model.addAttribute("user",user);
+        model.addAttribute("customers", customers);
+        return "allcustomers";
     }
     @GetMapping("/pending-shops")
     public String pendingshops(Model model, Principal principal){

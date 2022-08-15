@@ -2,6 +2,7 @@ package com.mensworld.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -207,28 +208,33 @@ public class MainController {
 		Object user = isLogged(principal);
 		if(search_type.equals("Search Product")){
 			List<Product> query_product = new ArrayList<Product>();
-			if(name.equals("") && category.equals("")){
+			if(name == null && category==null){
 				for (Product product : allProduct) {
-					if(product.getName().contains(name)){
+					if(product.getName().toLowerCase().contains(name.toLowerCase())){
 						if(product.getCategory().getName().equals(category)) {
 							query_product.add(product);
 						}
 					}
 				}
 			}
-			else if(!name.equals("")){
+			else if(name!=null){
 				for (Product product : allProduct) {
-					if(product.getName().contains(name)){
+					if(product.getName().toLowerCase().contains(name.toLowerCase())){
 						query_product.add(product);
 					}
 				}
 			}
-			else if(!category.equals("")){
+			else if(category!=null){
 				for (Product product : allProduct) {
 					if(product.getCategory().getName().equals(category)) {
 						query_product.add(product);
 					}
 				}
+			}
+			if(sort != null){
+				if(sort.equals("Low"))
+					query_product = sort_by_price_asc(query_product);
+				else query_product = sort_by_price_desc(query_product);
 			}
 			model.addAttribute("products", query_product);
 		}
@@ -236,7 +242,7 @@ public class MainController {
 			List<Shop> allshops =shopRepository.findAll();
 			List<Shop> query_shop = new ArrayList<Shop>();
 			for(Shop shop:allshops){
-				if(shop.getName().contains(name)){
+				if(shop.getName()!=null && shop.getName().toLowerCase().contains(name.toLowerCase())){
 					query_shop.add(shop);
 				}
 			}
@@ -249,12 +255,23 @@ public class MainController {
 		// System.out.println(allProduct);
 		return "products";
 	}
-	public Product createProd(){
-		Product p = new Product();
+	public List<Product> sort_by_price_asc(List<Product> products){
+		products.sort((p1,p2)->p1.getPrice().compareTo(p2.getPrice()));
 		// p.setName("shoe#"+4);
 		// p.setPrice("300");
 		// p.setQuantity("10");
-		return p;
+		for(Product product: products)
+			System.out.println(product.getPrice());
+		return products;
+	}
+	public List<Product> sort_by_price_desc(List<Product> products){
+		products.sort((p1,p2)->{return (p2.getPrice()-p1.getPrice());});
+		// p.setName("shoe#"+4);
+		// p.setPrice("300");
+		// p.setQuantity("10");
+		for(Product product: products)
+			System.out.println(product.getPrice());
+		return products;
 	}
 	@GetMapping(value = ("/product/{id}"))
 	public String singleProduct(@PathVariable int id, Model model, Principal principal, HttpSession session){
