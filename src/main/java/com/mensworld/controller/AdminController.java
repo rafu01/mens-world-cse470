@@ -18,9 +18,11 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.mensworld.dao.AdminRepository;
 import com.mensworld.dao.CategoryRepository;
+import com.mensworld.dao.OrderRepository;
 import com.mensworld.dao.ShopRepository;
 import com.mensworld.entities.Admin;
 import com.mensworld.entities.Category;
+import com.mensworld.entities.Order;
 import com.mensworld.entities.Shop;
 import com.mensworld.utilities.Message;
 
@@ -35,6 +37,8 @@ public class AdminController {
     private CategoryRepository categoryRepository;
     @Autowired
     private ShopRepository shopRepository;
+    @Autowired
+    private OrderRepository orderRepository;
     @GetMapping("/dashboard")
     public String dashboard(Model model, Principal principal){
         String email = principal.getName();
@@ -99,5 +103,17 @@ public class AdminController {
         model.addAttribute("user",user);
         model.addAttribute("shops", shops);
         return new RedirectView("/admin/pending-shops");
+    }
+    @GetMapping("/view-order")
+    public String view_orders(Model model, Principal principal){
+        String email = principal.getName();
+        Admin user = adminRepository.getUserByEmail(email); 
+        List<Shop> shops = shopRepository.findAll();
+        List<Order> orders = orderRepository.findAll();
+        model.addAttribute("title", "orders");
+        model.addAttribute("user",user);
+        model.addAttribute("orders", orders);
+        model.addAttribute("shops", shops);
+        return "view_orders";
     }
 }

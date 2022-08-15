@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.mensworld.dao.AdminRepository;
 import com.mensworld.dao.CategoryRepository;
 import com.mensworld.dao.CustomerRepository;
 import com.mensworld.dao.ProductsRepository;
 import com.mensworld.dao.ShopOwnerRepository;
 import com.mensworld.dao.ShopRepository;
 import com.mensworld.dao.UserRepository;
+import com.mensworld.entities.Admin;
 import com.mensworld.entities.Category;
 import com.mensworld.entities.Customer;
 import com.mensworld.entities.Product;
@@ -49,6 +51,8 @@ public class MainController {
 	private CategoryRepository categoryRepository;
 	@Autowired 
 	private ShopRepository shopRepository;
+	@Autowired
+	private AdminRepository adminRepository;
 	@GetMapping("/")
 	public String home(Model model, Principal principal, HttpSession session) {
 		model.addAttribute("title", "men's world");
@@ -133,8 +137,11 @@ public class MainController {
 		if(type.equals("ROLE_SHOP")){
 			user = new ShopOwner();
 		}
-		else{
+		else if(type.equals("ROLE_CUSTOMER")){
 			user = new Customer();
+		}
+		else{
+			user = new Admin();
 		}
 		user.setName(fullname);
 		user.setEmail(email);
@@ -153,9 +160,12 @@ public class MainController {
 				shopowner.setShop(shop);
 				this.shopownerRepository.save(shopowner);
 			}
-			else {
+			else if(type.equals("ROLE_CUSTOMER")){
 				this.customerRepository.save((Customer)user);
 			} 
+			else{
+				this.adminRepository.save((Admin)user);
+			}
 			model.addAttribute("user",user);
 			session.setAttribute("message",new Message("Successfully registered! ","notification is-success"));
 			return new RedirectView("/login");

@@ -14,8 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "orders")
-public class Order {
+@Table(name = "shop_wise_orders")
+public class ShopWiseOrder {
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
@@ -73,3 +73,4 @@ public class Order {
 		this.total = total;
 	}
 }
+

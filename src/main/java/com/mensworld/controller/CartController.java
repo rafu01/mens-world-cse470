@@ -187,12 +187,14 @@ public class CartController {
             available_coupons.put(product.getShop(),product.getShop().getCoupons());
         }
         // System.out.println(coupon);
+        cart.setTotal_after_discount(cart.getTotal());
         for(Shop shop:available_coupons.keySet()){
             for(Coupon coup:available_coupons.get(shop)){
                 // System.out.println(coup.getName());
                 if(coup.getName().equals(coupon)){
                     double price_after_discount = cart.getTotal_after_discount(shop, coup.getPercentage());
                     cart.setTotal_after_discount(price_after_discount);
+                    System.out.println(price_after_discount);
                     break;
                 }
             }

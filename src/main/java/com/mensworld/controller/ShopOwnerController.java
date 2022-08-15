@@ -34,7 +34,7 @@ import com.mensworld.entities.Shop;
 import com.mensworld.entities.ShopOwner;
 import com.mensworld.entities.User;
 import com.mensworld.utilities.Message;
-
+import com.mensworld.entities.ShopWiseOrder;
 @Controller
 @RequestMapping("/shop")
 public class ShopOwnerController {
@@ -216,19 +216,20 @@ public class ShopOwnerController {
         ShopOwner user = shopOwnerRepository.getUserByEmail(email);
         Shop shop = user.getShop();
 
-        List<Product> prod = shop.getProducts();
-        Order o = new Order();
-        o.setName("customer#1");
-        o.setQuantity(5);
-        o.setTotal(500);
-        o.setProducts(prod);
-        List<Order> orders = shop.getOrders();
-        orders.add(o);
-        orders.add(o);
-
+        List<ShopWiseOrder> orders = shop.getOrders();
+        // Order o = new Order();
+        // o.setName("customer#1");
+        // o.setQuantity(5);
+        // o.setTotal(500);
+        // o.setProducts(prod);
+        // List<Order> orders = shop.getOrders();
+        // orders.add(o);
+        // orders.add(o);
+        model.addAttribute("orders", orders);
+        System.out.println(orders.get(0).getTotal());
         // System.out.println(orders);
         model.addAttribute("user", user);
-        model.addAttribute("orders", orders);
+        // model.addAttribute("orders", orders);
         model.addAttribute("title", "view orders");
         return "view_orders";
     }

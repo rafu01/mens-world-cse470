@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -21,8 +22,8 @@ public class Shop {
 	private int id;
 	private String name;
 	private String description;
-	@OneToMany(cascade = CascadeType.ALL,fetch =FetchType.LAZY)
-	private List<Order> orders;
+	@ManyToMany(cascade = CascadeType.ALL,fetch =FetchType.LAZY)
+	private List<ShopWiseOrder> orders;
 	@OneToMany(cascade = CascadeType.ALL,fetch =FetchType.LAZY)
 	private List<Product> products;
 	private boolean approved_status;
@@ -58,10 +59,10 @@ public class Shop {
 	public void setProducts(List<Product> products) {
 		this.products = products;
 	}
-	public List<Order> getOrders() {
+	public List<ShopWiseOrder> getOrders() {
 		return orders;
 	}
-	public void setOrders(List<Order> orders) {
+	public void setOrders(List<ShopWiseOrder> orders) {
 		this.orders = orders;
 	}
 	public boolean getApproved_status(){
