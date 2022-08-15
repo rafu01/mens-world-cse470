@@ -26,13 +26,13 @@
                                     <td><p th:text="${'$'+pair.product.price}"></p></td>
                                     <td>
                                         <div>
-                                            <p class="button is-info" th:text="${pair.quantity}"></p>
+                                            <p class="mybutton" th:text="${pair.quantity}"></p>
                                             &nbsp; &nbsp;
-                                            <a th:if="${pair.product.quantity>pair.quantity}" th:href="@{/increment-quantity/{id}(id=${pair.product.id})}" class="button is-success is-outlined">+</a>
-                                            <a th:href="@{/decrement-quantity/{id}(id=${pair.product.id})}" class="button is-danger is-outlined">-</a>
+                                            <a th:if="${pair.product.quantity>pair.quantity}" th:href="@{/increment-quantity/{id}(id=${pair.product.id})}" class="mybutton focus">+</a>
+                                            <a th:href="@{/decrement-quantity/{id}(id=${pair.product.id})}" class="mybutton">-</a>
                                         </div>
                                     </td>
-                                    <td ><a th:href="@{/delete-from-cart/{id}(id=${pair.product.id})}" class="button is-danger">delete</a></td>
+                                    <td ><a th:href="@{/delete-from-cart/{id}(id=${pair.product.id})}" class="mybutton focus">delete</a></td>
                                 </tr>
                                 <!-- </form> -->
                             </div>

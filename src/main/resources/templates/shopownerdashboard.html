@@ -50,9 +50,9 @@
                             <td><p th:text="${product.description}"></p></td>
                             <td><p th:text="${product.quantity}"></p></td>
                             <td><p th:text="${'$'+product.price}"></p></td>
-                            <td><a th:href="@{/product/{id}(id=${product.id})}" class="button is-success"> View </a></td>
-                            <td><a th:href="@{/shop/product/edit/{id}(id=${product.id})}" class="button is-info"> Edit </a></td>
-                            <td><a th:href="@{/shop/product/delete/{id}(id=${product.id})}" class="button is-danger"> Delete </a></td>
+                            <td><a th:href="@{/product/{id}(id=${product.id})}" class="mybutton focus"> View </a></td>
+                            <td><a th:href="@{/shop/product/edit/{id}(id=${product.id})}" class="mybutton"> Edit </a></td>
+                            <td><a th:href="@{/shop/product/delete/{id}(id=${product.id})}" class="mybutton"> Delete </a></td>
                         </tr>
                     </div>
                 </tbody>

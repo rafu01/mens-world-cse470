@@ -14,7 +14,7 @@
                 <p class="subtitle"><b th:text="${product.price+'$'}"></b></p>
                 <p class="description" th:text="${product.description}"></p>
                 <p class="description" th:text="${product.category.name}"></p>
-                <a th:href="@{/add-to-cart/{id}(id=${product.id})}" class="button is-info">Add to cart</a>
+                <a th:href="@{/add-to-cart/{id}(id=${product.id})}" class="mybutton focus">Add to cart</a>
             </div>
         </div>
     </div>

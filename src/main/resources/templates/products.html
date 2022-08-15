@@ -38,7 +38,7 @@
         </div>
     </div>
         <div class="column is-1 is-narrow">
-          <button class="button is-info">Search</button>
+          <button class="mybutton focus">Search</button>
         </div>
       </div>
     </form>
@@ -64,8 +64,8 @@
                         <p th:text="${'Price: $' + product.price}"></p>
                         <p th:text="${'Quantity: ' + product.quantity}"></p>
                         <br>
-                        <a th:href="@{/add-to-cart/{id}(id=${product.id})}" class="button is-info"><i class="fas fa-solid fa-cart-plus"></i></a>
-                        <a class="button is-danger is-pulled-right" th:href="@{/customer/add-favorite/{id}(id=${product.id})}"><i class="fas fa-solid fa-heart"></i></a>
+                        <a th:href="@{/add-to-cart/{id}(id=${product.id})}" class="mybutton focus"><i class="fas fa-solid fa-cart-plus"></i></a>
+                        <a class="mybutton is-danger is-pulled-right" th:href="@{/customer/add-favorite/{id}(id=${product.id})}"><i class="fas fa-solid fa-heart"></i></a>
                       </div>
                     </div>
                   </div>   

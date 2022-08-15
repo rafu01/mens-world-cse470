@@ -9,6 +9,7 @@
         <!-- <title th:text="${title}"></title> -->
         <!-- custom stylesheet -->
         <link rel="stylesheet" th:href="@{/css/style.css}">
+        <link rel="stylesheet" th:href="@{/css/style.scss}">
         <!-- bulma css -->
         <link rel="icon" th:href="@{img/logo.png}">
         <title th:text="${title}"></title>
@@ -62,34 +63,34 @@
                 <div class="navbar-item">
                   <section th:if="${user==null}">
                     <div class="buttons">
-                      <a class="button is-info" th:href="@{/selectsignup}">
+                      <a class="mybutton focus" th:href="@{/selectsignup}">
                         <strong>Sign up</strong>
                       </a>
-                      <a class="button is-light" th:href="@{/login}">
+                      <a class="mybutton is-light" th:href="@{/login}">
                         Log in
                       </a>
                       <div th:if="${cart!=null}">
-                        <a class="button is-danger" th:href="@{/cart}"><i class="fas fa-shopping-cart"></i><span th:text="${cart.quantity}"></span></a>
+                        <a class="mybutton focus" th:href="@{/cart}"><i class="fas fa-shopping-cart"></i><span th:text="${cart.quantity}"></span></a>
                       </div>
                       <div th:if="${cart==null}">
-                        <a class="button is-danger" th:href="@{/cart}"><i class="fas fa-shopping-cart"></i></a>
+                        <a class="mybutton focus" th:href="@{/cart}"><i class="fas fa-shopping-cart"></i></a>
                       </div>
                     </div>
                   </section>
                   <section th:if="${user!=null}">
                     <div class="buttons">
-                      <a class="button is-info" th:href="@{/{id}/dashboard/(id=${user.role.substring(5,user.role.length()).toLowerCase()})}" >
+                      <a class="mybutton focus" th:href="@{/{id}/dashboard/(id=${user.role.substring(5,user.role.length()).toLowerCase()})}" >
                         <strong th:text="${user.name}"></strong>
                       </a>
                       <section th:if="${user.role.substring(5,user.role.length()).toLowerCase().equals('customer')}">
                         <div th:if="${cart!=null}">
-                          <a class="button is-danger" th:href="@{/cart}"><i class="fas fa-shopping-cart"></i><span th:text="${cart.quantity}"></span></a>
+                          <a class="mybutton focus" th:href="@{/cart}"><i class="fas fa-shopping-cart"></i><span th:text="${cart.quantity}"></span></a>
                         </div>
                         <div th:if="${cart==null}">
-                          <a class="button is-danger" th:href="@{/cart}"><i class="fas fa-shopping-cart"></i></a>
+                          <a class="mybutton focus" th:href="@{/cart}"><i class="fas fa-shopping-cart"></i></a>
                         </div>
                       </section> &nbsp; &nbsp;
-                      <a class="button" th:href="@{/logout}">
+                      <a class="mybutton" th:href="@{/logout}">
                         logout
                       </a>
                     </div>
