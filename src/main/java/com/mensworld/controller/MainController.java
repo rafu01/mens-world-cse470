@@ -66,17 +66,22 @@ public class MainController {
 
 		}
 		List<Product> products;
-		if(productsRepository.findAll().size()>5)
-			products = productsRepository.findAll().subList(0, 6);
+		if(productsRepository.findAll().size()>7)
+			products = productsRepository.findAll().subList(0, 7);
 		else
 			products = productsRepository.findAll();
 		Cart cart = (Cart) session.getAttribute("cart");
 		model.addAttribute("cart", cart);
 		model.addAttribute("products", products);
 		List<Product> featured_products = new ArrayList<>();
-		for(Product product: products){
-			if(product.getCategory().getName().equals("Smartphone")){
-				featured_products.add(product);
+		
+		for(Category cat:categoryRepository.findAll()){
+			for(Product product: products){
+				if(product.getCategory().getName().equals(cat.getName())){
+					featured_products.add(product);
+					break;
+				}
+
 			}
 		}
 		model.addAttribute("featured_products", featured_products);

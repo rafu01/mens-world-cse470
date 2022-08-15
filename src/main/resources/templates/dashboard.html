@@ -27,8 +27,8 @@
                         <div th:each="product: ${user.favorite}">
                         <tr>
                             <td><p th:text="${product.name}"></p></td>
-                            <td><a th:href="@{/add-to-cart/{id}(id=${product.id})}" class="button is-info"> Add to cart </a></td>
-                            <td><a th:href="@{/customer/delete-favorite/{id}(id=${product.id})}" class="button is-danger"> Remove </a></td>
+                            <td><a th:href="@{/add-to-cart/{id}(id=${product.id})}" class="mybutton focus"> <i class="fas fa-shopping-cart"></i></a></td>
+                            <td><a th:href="@{/customer/delete-favorite/{id}(id=${product.id})}" class="mybutton"> Remove </a></td>
                         </tr>
                         </div>
                     </tbody>
