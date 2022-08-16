@@ -3,8 +3,47 @@
     <nav th:replace="base::navbar"></nav>
 </head>
 <body>
-    <p th:text="${'shop id: '+shop.id}"></p>
-    <p th:text="${'shop name: '+shop.name}"></p>
-    <p th:text="${'shop description: '+shop.description}"></p>
+    <br><br>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-half">
+                <img class="product-image" src="/img/shopicon.png" alt="Placeholder image">
+            </div>
+            <div class="column is-half">
+                <p class="subtitle"><b th:text="${shop.name}"></b></p>
+                <p class="description" th:text="${'Description: '+shop.description}"></p>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <p class="center subtitle"><b>Browse Products from this shop</b></p>
+        <br>
+    <div class="columns is-multiline is-centered">
+            <div th:if="${products!=null}" th:each="product: ${products}" class="column is-one-quarter ">
+              <a th:href="@{/product/{id}(id=${product.id})}">
+                <div class="card">
+                    <div class="card-image">
+                      <figure class="image is-4by3">
+                        <img th:src="'data:image/png;base64,' + ${product.setImageBase64(product.image)}" alt="Placeholder image">
+                      </figure>
+                    </div>
+                    <div class="card-content">
+                      <div class="media">
+                        <div class="media-content">
+                          <p class="title is-4" th:text="${product.name}"></p>
+                        </div>
+                      </div>                 
+                      <div class="content">
+                        <p th:text="${'Price: $' + product.price}"></p>
+                        <p th:text="${'Quantity: ' + product.quantity}"></p>
+                        <br>
+                        <a th:href="@{/add-to-cart/{id}(id=${product.id})}" class="mybutton focus"><i class="fas fa-solid fa-cart-plus"></i></a>
+                        <a class="mybutton is-danger is-pulled-right" th:href="@{/customer/add-favorite/{id}(id=${product.id})}"><i class="fas fa-solid fa-heart"></i></a>
+                      </div>
+                    </div>
+                  </div>   
+                  </a>     
+            </div>
 </body>
+
 </html>

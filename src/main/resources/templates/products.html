@@ -72,11 +72,11 @@
                   </a>     
             </div>
             <div th:if="${shops!=null}" th:each="shop: ${shops}" class="column is-one-quarter ">
-              <a th:href="@{/shop/{id}(id=${shop.id})}">
+              <a th:href="@{/shops/{id}(id=${shop.id})}">
                 <div class="card">
                     <div class="card-image">
                       <figure class="image is-4by3">
-                        <img src="/img/shopicon.jpg" alt="Placeholder image">
+                        <img src="/img/shopicon.png" alt="Placeholder image">
                       </figure>
                     </div>
                     <div class="card-content">
@@ -95,4 +95,5 @@
       </div>
     </div>  
 </body>
+
 </html>

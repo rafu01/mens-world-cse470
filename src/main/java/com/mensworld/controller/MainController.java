@@ -212,18 +212,14 @@ public class MainController {
 	@RequestParam(required = false) String sort, @RequestParam(required = false) String search_type, @RequestParam(required = false) String category){
 		List<Product> allProduct = productsRepository.findAll();
 		Object user = isLogged(principal);
+		// System.out.println(name);
 		if(search_type.equals("Search Product")){
 			List<Product> query_product = new ArrayList<Product>();
 			if(name == null && category==null){
-				for (Product product : allProduct) {
-					if(product.getName().toLowerCase().contains(name.toLowerCase())){
-						if(product.getCategory().getName().equals(category)) {
-							query_product.add(product);
-						}
-					}
-				}
+				query_product = productsRepository.findAll();
 			}
-			else if(name!=null){
+			else if(!name.equals("")){
+				// System.out.println("this");
 				for (Product product : allProduct) {
 					if(product.getName().toLowerCase().contains(name.toLowerCase())){
 						query_product.add(product);
@@ -233,6 +229,7 @@ public class MainController {
 			else if(category!=null){
 				for (Product product : allProduct) {
 					if(product.getCategory().getName().equals(category)) {
+						// System.out.println(product.getName());
 						query_product.add(product);
 					}
 				}
@@ -266,8 +263,8 @@ public class MainController {
 		// p.setName("shoe#"+4);
 		// p.setPrice("300");
 		// p.setQuantity("10");
-		for(Product product: products)
-			System.out.println(product.getPrice());
+		// for(Product product: products)
+		// 	System.out.println(product.getPrice());
 		return products;
 	}
 	public List<Product> sort_by_price_desc(List<Product> products){
@@ -275,18 +272,44 @@ public class MainController {
 		// p.setName("shoe#"+4);
 		// p.setPrice("300");
 		// p.setQuantity("10");
-		for(Product product: products)
-			System.out.println(product.getPrice());
+		// for(Product product: products)
+		// 	System.out.println(product.getPrice());
 		return products;
 	}
 	@GetMapping(value = ("/product/{id}"))
 	public String singleProduct(@PathVariable int id, Model model, Principal principal, HttpSession session){
 		Product product = productsRepository.getReferenceById(id);
 		Object customer = isLogged(principal);
+		List<Product> products = product.getShop().getProducts();
+		products.remove(product);
 		Cart cart = (Cart) session.getAttribute("cart");
 		model.addAttribute("cart", cart);
-		model.addAttribute("customer", customer);
+		model.addAttribute("user", customer);
+		model.addAttribute("products", products);
 		model.addAttribute("product",product);
 		return "singleproduct";
+	}
+	@GetMapping("/shops")
+	public String shops(Model model, Principal principal){
+		Object user = isLogged(principal);
+		List<Shop> shops = shopRepository.findAll();
+		model.addAttribute("shops", shops);
+		model.addAttribute("user", user);
+		model.addAttribute("title", shops);
+		return "shops";
+	}
+	@GetMapping(value = ("/shops/{id}"))
+	public String singleShop(@PathVariable int id, Model model, Principal principal, HttpSession session){
+		Shop shop = shopRepository.getReferenceById(id);
+		Object customer = isLogged(principal);
+		// Cart cart = (Cart) session.getAttribute("cart");
+		// model.addAttribute("cart", cart);
+		List<Product> products = shop.getProducts();
+		// System.out.println(shop.getName());
+		model.addAttribute("user", customer);
+		model.addAttribute("shop",shop);
+		model.addAttribute("products", products);
+		model.addAttribute("title","shop");
+		return "singleshop";
 	}
 }

@@ -3,29 +3,15 @@
 	<head th:replace="base::header">
 		<nav th:replace="base::navbar">
 		</nav>
+		<link href="~bulma-carousel/dist/css/bulma-carousel.min.css" rel="stylesheet">
 	</head>
 	<body>
-		<div class="cover-page" th:style="'background-image:url(' + @{img/home-cover.jpg} + ');'">
+		<div class="cover-page item-1" th:style="'background-image:url(' + @{img/home-cover.jpg} + ');'">
 			<h1 class="main-title">MEN'S WORLD</h1>
 			<a href="/products" class="button is-dark is-fullwidth">Browse Products</a>
 		</div>
-		<section class="section">
-			<div class="container">
-				<!-- Start Carousel -->
-				<div id="carousel-demo" class="carousel">
-					<div class="item-1">
-						<img href="">
-					</div>
-					<div class="item-2">
-						<!-- Slide Content -->
-					</div>
-					<div class="item-3">
-						<!-- Slide Content -->
-					</div>
-				</div>
-				<!-- End Carousel -->
-			</div>
-		</section>
+		
+		<br>
 		<section class="container">
 			<h2 class="subtitle center"><b>Our New Arrivals</b></h2>
 			<div class="columns is-multiline is-centered">
@@ -93,12 +79,5 @@
 	</body>
 	<br><br>
 	<footer th:replace="base::footer">
-		<script src="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.3/dist/js/bulma-carousel.min.js"></script>
-		<script>
-		bulmaCarousel.attach('#carousel-demo', {
-			slidesToScroll: 1,
-			slidesToShow: 4
-		});
-		</script>
 	</footer>
 </html>

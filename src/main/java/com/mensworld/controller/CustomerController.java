@@ -159,6 +159,8 @@ public class CustomerController {
 		HashMap<Integer, Integer> shop_qty = new HashMap<>();
 		for(Pair pair: pairs){
 			Product product = pair.getProduct();
+			product.setQuantity(product.getQuantity()-pair.getQuantity());
+			this.productsRepository.save(product);
 			int shopID  = product.getShop().getId();
 			int qty = pair.getQuantity();
 			// for total order

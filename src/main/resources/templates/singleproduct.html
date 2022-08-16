@@ -15,11 +15,39 @@
                 <p class="description" th:text="${product.description}"></p>
                 <p class="description" th:text="${product.category.name}"></p>
                 <a th:href="@{/add-to-cart/{id}(id=${product.id})}" class="mybutton focus">Add to cart</a>
+                <a th:href="@{/shops/{id}(id=${product.shop.id})}" class="mybutton">Browse shop</a>
             </div>
         </div>
     </div>
-    <section>
-
-    </section>
+    <div class="container">
+        <p class="center subtitle"><b>More products from this shop</b></p>
+        <br>
+    <div class="columns is-multiline is-centered">
+            <div th:if="${products!=null}" th:each="product: ${products}" class="column is-one-quarter ">
+              <a th:href="@{/product/{id}(id=${product.id})}">
+                <div class="card">
+                    <div class="card-image">
+                      <figure class="image is-4by3">
+                        <img th:src="'data:image/png;base64,' + ${product.setImageBase64(product.image)}" alt="Placeholder image">
+                      </figure>
+                    </div>
+                    <div class="card-content">
+                      <div class="media">
+                        <div class="media-content">
+                          <p class="title is-4" th:text="${product.name}"></p>
+                        </div>
+                      </div>                 
+                      <div class="content">
+                        <p th:text="${'Price: $' + product.price}"></p>
+                        <p th:text="${'Quantity: ' + product.quantity}"></p>
+                        <br>
+                        <a th:href="@{/add-to-cart/{id}(id=${product.id})}" class="mybutton focus"><i class="fas fa-solid fa-cart-plus"></i></a>
+                        <a class="mybutton is-danger is-pulled-right" th:href="@{/customer/add-favorite/{id}(id=${product.id})}"><i class="fas fa-solid fa-heart"></i></a>
+                      </div>
+                    </div>
+                  </div>   
+                  </a>     
+            </div>
 </body>
+
 </html>

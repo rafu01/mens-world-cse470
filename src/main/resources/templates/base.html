@@ -9,7 +9,6 @@
         <!-- <title th:text="${title}"></title> -->
         <!-- custom stylesheet -->
         <link rel="stylesheet" th:href="@{/css/style.css}">
-        <link rel="stylesheet" th:href="@{/css/style.scss}">
         <!-- bulma css -->
         <link rel="icon" th:href="@{img/logo.png}">
         <title th:text="${title}"></title>
@@ -31,14 +30,14 @@
           
             <div id="navbarBasicExample" class="navbar-menu">
               <div class="navbar-end">
-                <a class="navbar-item">
-                  Shoes
+                <a href="/products" class="navbar-item">
+                  Products
                 </a>
-                <a class="navbar-item">
-                  Watches
+                <a href="/shops" class="navbar-item">
+                  Shops
                 </a>
-                  <a class="navbar-item">
-                    Perfume
+                  <a href="#" class="navbar-item">
+                    About
                   </a>
               </div>
     
