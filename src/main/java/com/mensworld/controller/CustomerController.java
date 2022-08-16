@@ -220,7 +220,7 @@ public class CustomerController {
 		order.setName(name);
 		order.setNumber(number);
 		orderRepository.save(order);
-		session.removeAttribute("cart");
+		// session.removeAttribute("cart");
 		// model.addAttribute("cart", cart);
 		model.addAttribute("title", "confirmed");
 		model.addAttribute("user",customer);
