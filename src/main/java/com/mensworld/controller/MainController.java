@@ -67,7 +67,7 @@ public class MainController {
 		}
 		List<Product> products;
 		if(productsRepository.findAll().size()>7)
-			products = productsRepository.findAll().subList(0, 7);
+			products = productsRepository.findAll().subList(0, 8);
 		else
 			products = productsRepository.findAll();
 		Cart cart = (Cart) session.getAttribute("cart");
