@@ -10,7 +10,7 @@
                 <b>All Orders</b>
             </div>
 
-            <div th:each="order: ${orders}">
+            <div th:if="${orders!=null}" th:each="order: ${orders}">
             <div class="card">
                 <header class="card-header">
                   <p class="card-header-title" th:text="${'order id: '+order.id}">

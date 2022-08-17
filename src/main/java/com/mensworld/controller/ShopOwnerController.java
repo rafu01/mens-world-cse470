@@ -35,21 +35,23 @@ import com.mensworld.entities.ShopOwner;
 import com.mensworld.entities.User;
 import com.mensworld.utilities.Message;
 import com.mensworld.entities.ShopWiseOrder;
+
 @Controller
 @RequestMapping("/shop")
 public class ShopOwnerController {
     @Autowired
-	private ShopOwnerRepository shopOwnerRepository;
+    private ShopOwnerRepository shopOwnerRepository;
     @Autowired
-	private CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private ShopRepository shopRepository;
     @Autowired
     private ProductsRepository productsRepository;
+
     @GetMapping("/dashboard")
-    public String dashboard(Model model, Principal principal){
+    public String dashboard(Model model, Principal principal) {
         String email = principal.getName();
         ShopOwner user = shopOwnerRepository.getUserByEmail(email);
 
@@ -57,35 +59,37 @@ public class ShopOwnerController {
         model.addAttribute("user", user);
         model.addAttribute("shop", user.getShop());
         model.addAttribute("products", user.getShop().getProducts());
-		return "shopownerdashboard";
+        return "shopownerdashboard";
     }
+
     @GetMapping("/add-product")
-	public String addProduct(Model model, Principal principal){
+    public String addProduct(Model model, Principal principal) {
         String email = principal.getName();
         ShopOwner user = shopOwnerRepository.getUserByEmail(email);
         List<Category> catgeories = categoryRepository.findAll();
         model.addAttribute("title", "add product");
         model.addAttribute("user", user);
         model.addAttribute("categories", catgeories);
-		return "addproduct";
-	}
+        return "addproduct";
+    }
+
     @GetMapping(value = ("/{id}"))
-    public String shop(Model model, Principal principal, @PathVariable int id){
+    public String shop(Model model, Principal principal, @PathVariable int id) {
         Shop shop = shopRepository.getReferenceById(id);
         model.addAttribute("shop", shop);
-        try{
+        try {
             String email = principal.getName();
             User user = userRepository.findByEmail(email);
             model.addAttribute("user", user);
-        }
-        catch(Exception e){
-            
+        } catch (Exception e) {
+
         }
         model.addAttribute("title", shop.getName());
         return "singleshop";
     }
+
     @GetMapping("/add-items")
-    public String add_items(Model model, Principal principal){
+    public String add_items(Model model, Principal principal) {
         String email = principal.getName();
         ShopOwner user = shopOwnerRepository.getUserByEmail(email);
         Shop shop = user.getShop();
@@ -94,22 +98,23 @@ public class ShopOwnerController {
         model.addAttribute("categories", categories);
         model.addAttribute("user", user);
         model.addAttribute("title", "add items");
-        
+
         return "add_items";
     }
-    @PostMapping(value=("/add-items"))
+
+    @PostMapping(value = ("/add-items"))
     public RedirectView save_add_items(Model model, Principal principal, HttpSession session,
-    @RequestParam("name") String name, @RequestParam("description") String description,
-    @RequestParam("price") Integer price, @RequestParam("quantity") Integer quantity,
-    @RequestParam("category") String category,
-    @RequestParam("file") MultipartFile file) throws IOException{
+            @RequestParam("name") String name, @RequestParam("description") String description,
+            @RequestParam("price") Integer price, @RequestParam("quantity") Integer quantity,
+            @RequestParam("category") String category,
+            @RequestParam("file") MultipartFile file) throws IOException {
 
         String email = principal.getName();
         ShopOwner user = shopOwnerRepository.getUserByEmail(email);
         Shop shop = user.getShop();
         // List<Product> current_products = shop.getProducts();
         // if(current_products.isEmpty()){
-        //     current_products = new ArrayList<Product>();
+        // current_products = new ArrayList<Product>();
         // }
         Product product = new Product();
         product.setName(name);
@@ -119,25 +124,26 @@ public class ShopOwnerController {
         product.setShop(shop);
         List<Category> cat = categoryRepository.findAll();
         for (Category category2 : cat) {
-            if(category2.getName().equals(category)){
+            if (category2.getName().equals(category)) {
                 product.setCategory(category2);
             }
         }
-        if(file!=null) {
-			byte[] image = java.util.Base64.getEncoder().encode(file.getBytes());
-			product.setImage(image);
-		}
-        
+        if (file != null) {
+            byte[] image = java.util.Base64.getEncoder().encode(file.getBytes());
+            product.setImage(image);
+        }
+
         productsRepository.save(product);
         shop.getProducts().add(product);
         // shop.setProducts(current_products);
         // productsRepository.save(product);
         shopRepository.save(shop);
-        session.setAttribute("message",new Message("product added successfully","notification is-success"));
+        session.setAttribute("message", new Message("product added successfully", "notification is-success"));
         return new RedirectView("/shop/dashboard");
     }
+
     @GetMapping("/product/edit/{id}")
-    public String edit_items(Model model, Principal principal, @PathVariable int id){
+    public String edit_items(Model model, Principal principal, @PathVariable int id) {
         String email = principal.getName();
         ShopOwner user = shopOwnerRepository.getUserByEmail(email);
         Product product = productsRepository.getReferenceById(id);
@@ -146,11 +152,12 @@ public class ShopOwnerController {
         model.addAttribute("title", "edit items");
         return "edititem";
     }
-    @PostMapping(value=("/product/save-items/{id}"))
-    public RedirectView save_edit_items(@PathVariable int id,Model model, Principal principal,
-    @RequestParam("name") String name, @RequestParam("description") String description,
-    @RequestParam("price") Integer price, @RequestParam("quantity") Integer quantity,
-    @RequestParam("file") MultipartFile file, HttpSession session) throws IOException{
+
+    @PostMapping(value = ("/product/save-items/{id}"))
+    public RedirectView save_edit_items(@PathVariable int id, Model model, Principal principal,
+            @RequestParam("name") String name, @RequestParam("description") String description,
+            @RequestParam("price") Integer price, @RequestParam("quantity") Integer quantity,
+            @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
 
         // String email = principal.getName();
         // ShopOwner user = shopOwnerRepository.getUserByEmail(email);
@@ -159,23 +166,24 @@ public class ShopOwnerController {
         product.setDescription(description);
         product.setPrice(price);
         product.setQuantity(quantity);
-        if(file!=null) {
-			byte[] image = java.util.Base64.getEncoder().encode(file.getBytes());
-			product.setImage(image);
-		}
+        if (file != null) {
+            byte[] image = java.util.Base64.getEncoder().encode(file.getBytes());
+            product.setImage(image);
+        }
         productsRepository.save(product);
-        session.setAttribute("message",new Message("product edited successfully","notification is-success"));
+        session.setAttribute("message", new Message("product edited successfully", "notification is-success"));
         return new RedirectView("/shop/dashboard");
     }
+
     @GetMapping("/product/delete/{id}")
-    public RedirectView delete_items(Model model, Principal principal, @PathVariable int id, HttpSession session){
+    public RedirectView delete_items(Model model, Principal principal, @PathVariable int id, HttpSession session) {
         String email = principal.getName();
         ShopOwner user = shopOwnerRepository.getUserByEmail(email);
         Product product = productsRepository.getReferenceById(id);
         Shop shop = user.getShop();
         List<Product> products = shop.getProducts();
-        for(int i=0;i<products.size();i++){
-            if(products.get(i).getId()==product.getId()){
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getId() == product.getId()) {
                 shop.getProducts().set(i, null);
                 break;
             }
@@ -186,11 +194,12 @@ public class ShopOwnerController {
         model.addAttribute("user", user);
         model.addAttribute("product", product);
         model.addAttribute("title", "edit items");
-        session.setAttribute("message",new Message("product deleted successfully","notification is-danger"));
+        session.setAttribute("message", new Message("product deleted successfully", "notification is-danger"));
         return new RedirectView("/shop/dashboard");
     }
+
     @GetMapping("/edit")
-    public String edit_shop(Model model, Principal principal){
+    public String edit_shop(Model model, Principal principal) {
         String email = principal.getName();
         ShopOwner user = shopOwnerRepository.getUserByEmail(email);
         Shop shop = user.getShop();
@@ -199,20 +208,23 @@ public class ShopOwnerController {
         model.addAttribute("title", "edit shop");
         return "editshop";
     }
-    @PostMapping(value=("/save-shop"))
-    public RedirectView save_shop(Model model, Principal principal, @RequestParam String name, @RequestParam String description,
-    HttpSession session){
+
+    @PostMapping(value = ("/save-shop"))
+    public RedirectView save_shop(Model model, Principal principal, @RequestParam String name,
+            @RequestParam String description,
+            HttpSession session) {
         String email = principal.getName();
         ShopOwner user = shopOwnerRepository.getUserByEmail(email);
         Shop shop = user.getShop();
         shop.setName(name);
         shop.setDescription(description);
         shopRepository.save(shop);
-        session.setAttribute("message",new Message("shop info updated successfully","notification is-success"));
+        session.setAttribute("message", new Message("shop info updated successfully", "notification is-success"));
         return new RedirectView("/shop/dashboard");
     }
+
     @GetMapping("/orders")
-    public String view_order(Model model, Principal principal){
+    public String view_order(Model model, Principal principal) {
         String email = principal.getName();
         ShopOwner user = shopOwnerRepository.getUserByEmail(email);
         Shop shop = user.getShop();
@@ -227,15 +239,16 @@ public class ShopOwnerController {
         // orders.add(o);
         // orders.add(o);
         model.addAttribute("orders", orders);
-        System.out.println(orders.get(0).getTotal());
+        // System.out.println(orders.get(0).getTotal());
         // System.out.println(orders);
         model.addAttribute("user", user);
         // model.addAttribute("orders", orders);
         model.addAttribute("title", "view orders");
         return "view_orders";
     }
+
     @GetMapping("/add-coupon")
-    public String add_coupon(Model model, Principal principal){
+    public String add_coupon(Model model, Principal principal) {
         String email = principal.getName();
         ShopOwner user = shopOwnerRepository.getUserByEmail(email);
         Shop shop = user.getShop();
@@ -245,14 +258,15 @@ public class ShopOwnerController {
         model.addAttribute("title", "add coupon");
         return "add_coupon";
     }
+
     @PostMapping("/add-coupon")
-    public RedirectView save_coupon(@ModelAttribute Coupon coupon, Principal principal, HttpSession session){
+    public RedirectView save_coupon(@ModelAttribute Coupon coupon, Principal principal, HttpSession session) {
         String email = principal.getName();
         ShopOwner user = shopOwnerRepository.getUserByEmail(email);
         Shop shop = user.getShop();
         shop.getCoupons().add(coupon);
         shopRepository.save(shop);
-        session.setAttribute("message",new Message("Coupon added: "+coupon.getName(),"notification is-success"));
+        session.setAttribute("message", new Message("Coupon added: " + coupon.getName(), "notification is-success"));
         return new RedirectView("/shop/add-coupon");
     }
 }

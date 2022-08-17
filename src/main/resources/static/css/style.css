@@ -181,3 +181,6 @@ input, textarea, select{
 #signupoption {
     padding-top: 0%;
 }
+.remove-link{
+    color: inherit;
+}

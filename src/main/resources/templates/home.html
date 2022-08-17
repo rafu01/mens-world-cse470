@@ -16,6 +16,7 @@
 			<h2 class="subtitle center"><b>Our New Arrivals</b></h2>
 			<div class="columns is-multiline is-centered">
 				<div class="column is-3" th:each="product: ${products}">
+					<a class="remove-link" th:href="@{/product/{id}(id=${product.id})}">
 					<div class="card">
 						<div class="card-image">
 						  <figure class="image is-4by3">
@@ -24,16 +25,17 @@
 						</div>
 						<div class="card-content">
 						<div class="media-content">
-							<h2><b th:text="${'$'+product.price}"></b></h2>
+							<h2><b th:text="${product.name}"></b></h2>
 						</div>
 						  <div class="media">
-							<h3 th:text="${product.name}"></h3>
+							<h3 th:text="${'$'+product.price}"></h3>
 						  </div>
 						  <div>
 							<a th:href="@{/add-to-cart/{id}(id=${product.id})}" class="mybutton focus"><i class="fas fa-shopping-cart"></i> Add to cart</a>
 						  </div>
 						</div>
 					  </div>
+					  </a>
 				</div>
 			</div>
 		</section>
@@ -55,6 +57,7 @@
 			<h2 class="subtitle center"><b>Our Featured Products</b></h2>
 			<div class="columns is-multiline is-centered">
 				<div class="column is-3" th:each="product: ${featured_products}">
+					<a class="remove-link" th:href="@{/product/{id}(id=${product.id})}">
 					<div class="card product">
 						<div class="card-image">
 						  <figure class="image is-4by3">
@@ -63,16 +66,17 @@
 						</div>
 						<div class="card-content">
 						<div class="media-content">
-							<h2><b th:text="${'$'+product.price}"></b></h2>
+							<h2><b th:text="${product.name}"></b></h2>
 						</div>
 						  <div class="media">
-							<h3 th:text="${product.name}"></h3>
+							<h3 th:text="${'$'+product.price}"></h3>
 						  </div>
 						  <div>
 							<a class="mybutton focus "><i class="fas fa-shopping-cart"></i> Add to cart</a>
 						  </div>
 						</div>
 					  </div>
+					</a>
 				</div>
 			</div>
 		</section>
