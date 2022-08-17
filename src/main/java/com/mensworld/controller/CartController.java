@@ -60,7 +60,13 @@ public class CartController {
             List<Pair> pairs = new ArrayList<>();
             Pair pair = new Pair();
             pair.setProduct(product);
-            pair.setQuantity(1);
+            int available = product.getQuantity();
+            if(available>=1)
+                pair.setQuantity(1);
+            else {
+                // session.setAttribute("message",new Message("product sold out","notification is-danger"));
+                return new RedirectView(context);
+            }
             pairs.add(pair);
             cart.setProducts(pairs);
             // cart.setProducts(prd);

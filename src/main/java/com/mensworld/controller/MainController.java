@@ -215,7 +215,7 @@ public class MainController {
 		// System.out.println(name);
 		if(search_type.equals("Search Product")){
 			List<Product> query_product = new ArrayList<Product>();
-			if(name == null && category==null){
+			if(name.equals("") && category==null){
 				query_product = productsRepository.findAll();
 			}
 			else if(!name.equals("")){
@@ -234,6 +234,7 @@ public class MainController {
 					}
 				}
 			}
+			// System.out.println(name+" "+category+" "+sort);
 			if(sort != null){
 				if(sort.equals("Low"))
 					query_product = sort_by_price_asc(query_product);
